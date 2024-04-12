@@ -1,0 +1,161 @@
+:root {
+    --black: #021214;
+    --blackSecondary: #181817;
+
+    --white: #F5FAFD;
+    --paleWhite: #a9adb0;
+}
+
+.adminPage {
+    display: flex;
+}
+
+.menu {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 20%;
+    background: linear-gradient(-120deg, var(--black), var(--blackSecondary));
+    gap: 40px;
+
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.mainContainer {
+    height: 100vh;
+    width: 80%;
+    background-color: var(--white);
+}
+
+.logo {
+    padding-top: 40px;
+    color: var(--white);
+    font-size: 1rem;
+    text-align: center;
+}
+
+.adminProfile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+    color: var(--white);
+}
+
+.pimage {
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    border-radius: 15%;
+    border: var(--white) 2px solid;
+}
+
+.pimage img {
+    width: 100%; 
+    height: 100%;
+    object-fit: cover;
+}
+
+.pinfo h3{
+    font-size: 22px;
+}
+
+.pinfo p{
+    font-size: 14px;
+    color: var(--paleWhite);
+}
+
+.dashboard, .pages, .analytics {
+    color: var(--white);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 50%;
+    align-items: center;
+}
+
+.line {
+    height: 90%;
+    align-self: center;
+}
+
+.db {
+    position: relative;
+    left: 20%;
+    display: flex;
+    gap: 15px;
+}
+
+.dashboardEntries ul{
+    list-style-type: none;
+}
+
+.active {
+    background-color: var(--white);
+    border-radius: 5px;
+    color: var(--black);
+    padding: 0 10px;
+    margin: 0 auto 5px auto;
+    width: fit-content;
+    position: relative;
+    left: 20px; 
+}
+
+.active:hover {
+    background-color: var(--white);
+    border-radius: 5px;
+    color: var(--black);
+
+    padding: 0 10px;
+    margin: 0 auto 5px auto;
+    width: fit-content;
+    transition: position 2s;
+}
+
+.btns {
+    margin: auto;
+}
+
+.btns button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+}
+
+.lgout {
+    background-color: transparent;
+    outline: 2px solid var(--white);
+    outline-offset: -2px;
+
+    color: var(--white);
+    font-weight: 600;
+}
+
+.swtch {
+    border: none;
+    background-color: var(--white);
+    
+
+    color: var(--black);
+    font-weight: 600;
+}
+
+li {
+    transition: padding 0.2s, position 2s;
+    padding: 0 10px;
+    margin-bottom: 5px;
+}
+
+li:hover {
+    width: fit-content;
+    outline: 2px solid var(--white);
+    outline-offset: -2px;
+
+    padding: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
