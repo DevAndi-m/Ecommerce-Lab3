@@ -5,6 +5,7 @@ import UsersDashboard from './UsersDashboard';
 import ProductsDashboard from './ProductsDashboard';
 import AdminDashboard from './AdminDashboard';
 import HomePg from './HomePg';
+import DefaultDash from './DefaultDash';
 
 export default function AdminPage() {
 
@@ -75,6 +76,7 @@ export default function AdminPage() {
                 </div>
             </div>
             <div className='mainContainer'>
+                {selected === null && <DefaultDash />}
                 {selected === 1 && <UsersDashboard />}
                 {selected === 2 && <ProductsDashboard />}
                 {selected === 3 && <AdminDashboard />}
