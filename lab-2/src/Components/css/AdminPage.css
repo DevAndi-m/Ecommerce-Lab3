@@ -6,6 +6,10 @@
     --paleWhite: #a9adb0;
 }
 
+button, input {
+    font-family: "Mukta", sans-serif;
+}
+
 .adminPage {
     display: flex;
 }
@@ -75,6 +79,8 @@
     gap: 20px;
     width: 50%;
     align-items: center;
+    position: relative;
+    left: -20px;
 }
 
 .line {

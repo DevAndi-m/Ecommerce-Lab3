@@ -1,8 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/Users.css';
 import placeholderImg from '../placeholderImages/profilePLC.jpg';
 
 function UsersDashboard() {
+
+  const [page, setPage] = useState(1);
+  
+  useEffect(() => {
+    selectedPage(page);
+  }, [page]);
+
+  const selectedPage = (pageNum) => {
+    const buttonPageOne = document.getElementsByClassName('ulU')[0];
+    const buttonPageTwo = document.getElementsByClassName('cau')[0];
+    
+    const pageOne = document.getElementsByClassName('bodyContainer')[0];
+    const pageTwo = document.getElementsByClassName('createUserContainer')[0];
+  
+    if (pageNum === 1) {
+      buttonPageOne.style.textDecoration = "underline";
+      buttonPageTwo.style.textDecoration = "none";
+      pageOne.style.display = "flex";
+      pageTwo.style.display = "none";
+    } else {
+      buttonPageOne.style.textDecoration = "none";
+      buttonPageTwo.style.textDecoration = "underline";
+      pageOne.style.display = "none";
+      pageTwo.style.display = "flex";
+    }
+  }
+
   return (
     <div className='userMainCont'>
         <div className='header'>
@@ -10,8 +37,8 @@ function UsersDashboard() {
             <h1>Users Dashboard</h1>
           </div>
           <div className='dashboardNav'>
-            <button>User List/Update</button>
-            <button>Create a user</button>
+            <button className='ulU' onClick={() => selectedPage(1)}>User List/Update</button>
+            <button className='cau'onClick={() => selectedPage(2)}>Create a user</button>
           </div>
         </div>
         <div className='bodyContainer'>
@@ -107,7 +134,7 @@ function UsersDashboard() {
               <div className='rightUserTitle'>
                 <div className='inpt'>
                   <label>Name: </label>
-                  <input type='text' value=" Filan Misteki"></input>
+                  <input type='text' value="Filan Misteki"></input>
                 </div>
                 <div className='inpt'>
                   <label>Email: </label>
@@ -134,7 +161,48 @@ function UsersDashboard() {
               </div>
             </div>
             <div className='rightBtns'>
-
+              <button className='update'>Confirm Changes</button>
+              <button className='cancel'>Cancel Changes</button>
+              <button className='delete'>Delete User</button>
+              <button className='makeAdmin'>Make Admin</button>
+            </div>
+          </div>
+        </div>
+        <div className='createUserContainer' style={{ display: 'none' }}>
+          <div className='createUserLeft'>
+            <div className='cuTitle'>
+              <h1>Create User</h1>
+            </div>
+            <div className='cuInputs'>
+              <div className='cInput'>
+                <label>Profile Picture:</label>
+                <input type='file'></input>
+              </div>
+              <div className='cInput'>
+                <label>Name:</label>
+                <input type='text'></input>
+              </div>
+              <div className='cInput'>
+                <label>Email:</label>
+                <input type='text'></input>
+              </div>
+              <div className='cInput'>
+                <label>Phone Number:</label>
+                <input type='text'></input>
+              </div>
+              <div className='cInput'>
+                <label>Password:</label>
+                <input type='text'></input>
+              </div>
+            </div>
+          </div>
+          <div className='createUserRight'>
+            <div className='inputPic'>
+              <img src={placeholderImg}></img>
+            </div>
+            <div className='createUserButtons'>
+              <button className='createNewUser'>Create User</button>
+              <button className='discardNewUser'>Discard User</button>
             </div>
           </div>
         </div>

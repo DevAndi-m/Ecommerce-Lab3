@@ -8,6 +8,10 @@
     --grey: #767676;
 }
 
+button, input, label {
+    font-family: "Mukta", sans-serif;
+}
+
 .header {
     background: linear-gradient(45deg, var(--blackSecondary), var(--black));
     display: flex;
@@ -39,12 +43,18 @@
     border-radius: 8px;
     border: none;
 
-    background-color: var(--white);
-    color: var(--blackSecondary);
+    background-color: transparent;
+    color: var(--white);
+    transition: transform 0.2s;
 }
 
+.dashboardNav button:hover {
+    transform: translateY(-10px);
+}
+
+/* Me ndrrru */
 .bodyContainer {
-    display: flex;
+    display: none;
     justify-content: space-evenly;
 
     margin: 0 10px;
@@ -57,7 +67,7 @@
     height: 100%;
     background-color: var(--secondaryWhite);
     border-radius: 12px;
-
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     display: flex;
     flex-direction: column;
     max-height: 80vh;
@@ -112,7 +122,7 @@
 }
 
 .userCard {
-    background-color: var(--grey);
+    background: linear-gradient(-120deg, var(--black), var(--blackSecondary));
     width: 90%;
     margin: auto;
     padding: 20px;
@@ -135,6 +145,8 @@
     display: flex;
     align-items: center;
     gap: 15px;
+
+    color: var(--white);
 }
 
 .userBtn {
@@ -166,7 +178,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 
-    background-color: var(--paleWhite);
+    background-color: var(--secondaryWhite);
     color: var(--black);
 
     padding: 8px;
@@ -196,8 +208,8 @@
 }
 
 .rightUserImage {
-    width: 40%;
-    height: 240px;
+    width: 30%;
+    height: 200px;
     overflow: hidden;
     border-radius: 12px;
     
@@ -219,9 +231,10 @@
 .inpt {
     display: flex;
     flex-direction: row;
+    gap: 5px;
 
     background-color: var(--white);
-    padding: 10px;
+    padding: 2px 10px;
     border-radius: 12px;
 }
 
@@ -235,13 +248,15 @@
 .infoContainer {
     width: 47.5%;
     height: 100%;
-    background-color: var(--secondaryWhite);
+    background: linear-gradient(-120deg, var(--black), var(--blackSecondary));
     border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .rightMoreInfo {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 15px;
     margin: 0 20px;
 }
@@ -253,8 +268,6 @@
 .rightMoreInfo input {
     width: 98%;
     padding: 5px;
-
-    
 }
 
 .inptMI {
@@ -269,4 +282,184 @@
 .inptMI input {
     overflow-x: auto;
     white-space: nowrap;
+
+    background-color: transparent;
+    border: none;
+}
+
+.rightBtns {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15%;
+    padding: 20px;
+}
+
+.rightBtns button {
+    font-weight: 800;
+    font-size: 15px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--blackSecondary);
+
+    transition: all 0.1s;
+}
+
+.update {
+    color: #45F595;
+    outline: 3px solid #45F595;
+}
+
+.cancel {
+    color: #5152F5;
+    outline: 3px solid #5152F5;
+}
+
+.delete {
+    color: #F53A33;
+    outline: 3px solid #F53A33;
+}
+
+.makeAdmin {
+    color: #DFF551;
+    outline: 3px solid #DFF551;
+}
+
+.update:hover {
+    background-color: #45F595;
+    color: var(--black);
+    outline: none;
+}
+
+.cancel:hover {
+    background-color: #5152F5;
+    color: var(--black);
+    outline: none;
+}
+
+.delete:hover {
+    background-color: #F53A33;
+    color: var(--black);
+    outline: none;
+}
+
+.makeAdmin:hover {
+    background-color: #DFF551;
+    color: var(--black);
+    outline: none;
+}
+
+/* Create User */
+
+.createUserContainer {
+    margin: 10px;
+    width: 97.5%;
+    height: 80vh;
+    padding: 0 10px;
+    display: flex;
+}
+
+.createUserLeft {
+    padding: 10px 20px;
+    width: 70%;
+    height: 100%;
+    position: relative;
+    left: 20px;
+}
+
+.cuTitle {
+    font-size: 25px;
+    margin-bottom: 20px;
+}
+
+.cuInputs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 80%;
+    justify-content: space-evenly;
+}
+
+.cInput {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cuInputs label {
+    font-size: 24px;
+    width:20%;
+}
+
+.cuInputs input {
+    width: 80%;
+    margin-right: 100px;
+    border-radius: 10px;
+    border: 1px solid var(--blackSecondary);
+    font-size: 24px;
+    padding: 5px 10px;
+}
+
+.createUserRight {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    justify-content: space-evenly;
+}
+
+.inputPic {
+    width: 80%;
+    height: 45%;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.inputPic img {
+    width: 100%; 
+    height: 100%;
+    object-fit: cover;
+}
+
+.createUserButtons {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    gap: 20px;
+}
+
+.createUserButtons button{
+    padding: 10px 50px;
+    font-weight: 800;
+    font-size: 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: transparent;
+
+    transition: all 0.1s;
+}
+
+.createNewUser {
+    color: #45F595;
+    outline: 3px solid #45F595;
+}
+
+.discardNewUser {
+    color: #F53A33;
+    outline: 3px solid #F53A33;
+}
+
+.createNewUser:hover {
+    background-color: #45F595;
+    color: var(--white);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.discardNewUser:hover {
+    background-color: #F53A33;
+    color: var(--white);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
