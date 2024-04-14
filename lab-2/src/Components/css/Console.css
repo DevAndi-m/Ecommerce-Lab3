@@ -1,0 +1,13 @@
+.cHolder {
+    background-color: rgb(37, 37, 37);
+    width: 98%;
+    height: 97vh;
+    margin: 15px;
+    border-radius: 15px;
+    overflow-y: scroll;
+}
+
+.consoletext {
+    color: white;
+    margin: 20px;
+}

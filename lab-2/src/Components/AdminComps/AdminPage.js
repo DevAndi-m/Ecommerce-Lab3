@@ -6,6 +6,7 @@ import ProductsDashboard from './ProductsDashboard';
 import AdminDashboard from './AdminDashboard';
 import HomePg from './HomePg';
 import DefaultDash from './DefaultDash';
+import AdminCons from './AdminCons';
 
 export default function AdminPage() {
 
@@ -66,6 +67,7 @@ export default function AdminPage() {
                             <ul>
                                 <li className={selected === 8 ? 'active' : ''} onClick={() => handleClick(8)}>Users</li>
                                 <li className={selected === 9 ? 'active' : ''} onClick={() => handleClick(9)}>Products</li>
+                                <li className={selected === 10 ? 'active' : ''} onClick={() => handleClick(10)}>Console</li>
                             </ul>
                         </div>
                     </div>
@@ -81,6 +83,7 @@ export default function AdminPage() {
                 {selected === 2 && <ProductsDashboard />}
                 {selected === 3 && <AdminDashboard />}
                 {selected === 4 && <HomePg />}
+                {selected === 10 && <AdminCons />}
             </div>
         </div>
     )
