@@ -2,23 +2,41 @@ import React, { useEffect, useState } from 'react';
 import '../css/Console.css';
 
 function AdminCons() {
-    const [noPara, setNoPara] = useState(0);
+
+    const [consoleData, setConsoleData] = useState([{}])
 
     useEffect(() => {
-        
-    }, [noPara]);
-
-    const generateParagraphs = (num) => {
-        const paragraphs = [];
-        for (let index = 0; index < num; index++) {
-            paragraphs.push(<p key={index} className='consoletext'>This is a user</p>);
-        }
-        return paragraphs;
-    };
+        fetch("http://localhost:5000/api")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setConsoleData(data);
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
 
     return (
         <div className='cHolder'>
-            {generateParagraphs(20)}
+            {consoleData.length > 0 ? (
+                consoleData.map((user, index) => (
+                    <p key={index} className='consoletext'>
+                        Server found: {user.username} - {user.useremail}
+                        {user.userDateOfCreation ? 
+                            `, date of creation: ${user.userDateOfCreation.day}/${user.userDateOfCreation.month}/${user.userDateOfCreation.year}` 
+                            : ''}
+                    </p>
+                ))
+            ) : (
+                <h2>Loading...</h2>
+            )
+            }
         </div>
     );
 }
