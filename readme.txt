@@ -1,66 +1,14 @@
 MONGO ADMIN
 --andiyt72
---k9J8wK5roIunMGre
+--************
 
 mongodb+srv://andiyt72:<password>@backenddb.we6ijj2.mongodb.net/
-mongodb+srv://andiyt72:k9J8wK5roIunMGre@backenddb.we6ijj2.mongodb.net/?retryWrites=true&w=majority&appName=BackendDB
+mongodb+srv://andiyt72:**************@backenddb.we6ijj2.mongodb.net/?retryWrites=true&w=majority&appName=BackendDB
 
 OTHER DB:
 andiyt72
 3HFpHG4SnaXYyLZQ
 mongodb+srv://andiyt72:3HFpHG4SnaXYyLZQ@lab2test.tlxmt3t.mongodb.net/?retryWrites=true&w=majority&appName=lab2test
-
-users [
-	user: 
-	{
-		username: string,
-		useremail: string,
-		userprofile: string,
-		userphonenum: string,
-		userpassword: string,
-		userdateofcreation:
-		{					
-			day: int,
-			month: int,
-			year: int
-		}
-		userID: int,
-		userisadmin: boolean,
-		usersellingproducts: 
-		[
-			product: 
-			{
-				productname: string,
-				productcategory: string,
-				productquantity: int,
-				productprice: int,
-				productID: int,
-				productdateoflisting: {
-					day: int,
-					month: int,
-					year: int
-
-				}
-			}
-		]
-		userpurchases: 
-		[
-			bproduct:
-			{
-				productname: string,
-				productcategory: string,
-				productprice: int,
-				productID: int,
-				productdateofpurchase: {
-					day: int,
-					month: int,
-					year: int
-
-				}
-			}
-		]
-	}
-]
 
 qelet follderi front edhe back
 per me u manovru n'cli punohet me cd manej ku po don me shku ose .. per mu kthy mrapa
