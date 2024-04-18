@@ -1,8 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const User = require('./user.model.schema');
 const app = express();
 
 const port = 5000;
+
+app.use(express.json());
 
 // CORS (cross origin diqka) - pe nal webfaqen me marr ose me qu info me ni faqe tjeter qkado qe esht
 // me ket kod e ndreq problemin veq duhet mi thon pi kujna lejohet
@@ -25,35 +28,21 @@ mongoose.connect("mongodb+srv://andiyt72:3HFpHG4SnaXYyLZQ@lab2test.tlxmt3t.mongo
     })  
     
     app.get('/api', (req, res) => {
-        res.json([
-        {
-            username: "userOne",
-            useremail: "userOne@mail.com",
-            userDateOfCreation: {
-                day: 2,
-                month: 5,
-                year: 1999
+        res.json(
+            {
+                name: "Andi",
+                surname: "Morina"
             }
-        },
-        {
-        username: "userTwo",
-        useremail: "userTwo@mail.com",
-        userDateOfCreation: {
-            day: 5,
-            month: 11,
-            year: 2000
+        )
+    })
+
+    app.post('/api', async (req, res) => {
+        try {
+            const user = await User.create(req.body);
+            res.status(200).json(user)
+        } catch (error) {
+            res.status(500).json({message: error.message});
         }
-        },
-        {
-        username: "userThree",
-        useremail: "userThree@mail.com",
-        userDateOfCreation: {
-            day: 1,
-            month: 1,
-            year: 1111
-        }
-        }  
-        ])
     })
 }) 
 .catch(() => {
