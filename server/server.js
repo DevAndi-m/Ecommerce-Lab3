@@ -1,6 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const User = require('./user.model.schema');
+const Product = require('./product.model.schema')
+const PurchasedProduct = require('./purchasedProduct.schema')
 const app = express();
 
 const port = 5000;
@@ -26,7 +28,10 @@ mongoose.connect("mongodb+srv://andiyt72:3HFpHG4SnaXYyLZQ@lab2test.tlxmt3t.mongo
     app.listen(port, () => {
         console.log('Server is running on port ' + port)
     })  
-    
+
+
+
+    // GET REQUESTS
     app.get('/api', (req, res) => {
         res.json(
             {
@@ -36,7 +41,78 @@ mongoose.connect("mongodb+srv://andiyt72:3HFpHG4SnaXYyLZQ@lab2test.tlxmt3t.mongo
         )
     })
 
-    app.post('/api', async (req, res) => {
+    app.get('/api/users', async (req, res) => {
+        try {   
+            const users = await User.find({}).lean();
+            res.status(200).json(users);
+        } catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    })
+
+    app.get('/api/products', async (req, res) => {
+        try {   
+            const products = await Product.find({}).lean();
+            res.status(200).json(products);
+        } catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    })
+
+    app.get('/api/purchasedProducts', async (req, res) => {
+        try {   
+            const purchasedProducts = await PurchasedProduct.find({}).lean();
+            res.status(200).json(purchasedProducts);
+        } catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    })
+
+    // single items GET
+
+    app.get('/api/user/:id', async (req, res) => {
+        try {
+            const { id } = req.params;
+            const user = await User.findById(id).lean();
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            res.status(200).json(user);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    });
+    
+
+    app.get('./api/product:id', async (req, res) => {
+        try {
+            const { id } = req.params;
+            const product = await Product.findById(id).lean();
+            if (!product) {
+                return res.status(404).json({ message: "Product not found" });
+            }
+            res.status(200).json(product)
+        } catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    })
+
+    app.get('./api/purchasedProduct:id', async (req, res) => {
+        try {
+            const { id } = req.params;
+            const purchasedProduct = await User.findById(id).lean();
+            if (!purchasedProduct) {
+                return res.status(404).json({ message: "Purchased product not found" });
+            }
+            res.status(200).json(purchasedProduct)
+        } catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    })
+
+
+    // POST REQUESTS
+    app.post('/api/users', async (req, res) => {
         try {
             const user = await User.create(req.body);
             res.status(200).json(user)
@@ -44,6 +120,131 @@ mongoose.connect("mongodb+srv://andiyt72:3HFpHG4SnaXYyLZQ@lab2test.tlxmt3t.mongo
             res.status(500).json({message: error.message});
         }
     })
+
+    app.post('/api/products', async (req, res) => {
+        try {
+            const product = await Product.create(req.body);
+            res.status(200).json(product)
+        } catch (error) {
+            res.status(500).json({message: error.message});
+        }
+    })
+
+    app.post('/api/purchasedProducts', async (req, res) => {
+        try {
+            const purchasedProduct = await PurchasedProduct.create(req.body);
+            res.status(200).json(purchasedProduct)
+        } catch (error) {
+            res.status(500).json({message: error.message});
+        }
+    })
+     
+    // UPDATE USER
+    app.put('/api/user/:id', async (req, res) => {
+        try {
+            const { id } = req.params;
+            const filter = { _id: id };
+    
+            const updatedUser = await User.findOneAndUpdate(filter, req.body, { new: true }); 
+    
+            if (!updatedUser) {
+                return res.status(404).json({ message: "User not found!" });
+            }
+    
+            res.status(200).json(updatedUser);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    });
+    
+
+    app.put('/api/product/:id', async (req, res) => {
+        try {
+            const { id } = req.params;
+            const filter = { _id: id };
+            const product = await User.findOneAndUpdate(filter, req.body, { new: true });
+
+            if(!product) {
+                return res.status(404).json({message: "Product not found!"})
+            }
+
+            const updatedProduct = await Product.findById(id).lean()
+            res.status(200).json(updatedProduct)
+        } catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    })
+
+    app.put('/api/purchasedProduct/:id', async (req, res) => {
+        try {
+            const { id } = req.params;
+            const filter = { _id: id };
+            const purchasedProduct = await PurchasedProduct.findOneAndUpdate(filter, req.body, { new: true });
+
+            if(!purchasedProduct) {
+                return res.status(404).json({message: "Purchased product not found!"})
+            }
+
+            const updatedPurchasedProduct = await PurchasedProduct.findById(id).lean()
+            res.status(200).json(updatedPurchasedProduct)
+        } catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    })
+
+    // DELETE API
+
+    app.delete('/api/user/:id', async (req, res) => {
+        try {
+            const { id } = req.params;
+            const filter = {_id: id};
+
+            const user = await User.findByIdAndDelete(filter, req.body, { new: true })
+
+            if(!user) {
+                return res.status(404).json({message: "User not found!"})
+            }
+
+            res.status(200).json({message: `User: ${user.userName} has been deleted!`})
+        } catch (error) {
+           res.status(500).json({message: error.message}) 
+        }
+    })
+
+    app.delete('api/product/:id', async (req, res) => {
+        try {
+            const { id } = req.params;
+            const filter = {_id: id}
+
+            const product = await Product.findByIdAndDelete(filter, req.body, { new: true })
+
+            if(!product) {
+                res.status(404).json({message: "Product not found"})
+            }
+
+            res.status(200).json({message: `Product: ${product.productName} has been deleted!`})
+
+        } catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    })
+
+    app.delete('api/purchasedProduct/:id'), async (req, res) => {
+        try {
+            const id = req.params;
+            const filter = {_id: id}
+
+            const purchasedProduct = await PurchasedProduct.findByIdAndDelete(filter, res.body, { new: true })
+
+            if(!purchasedProduct) {
+                res.status(404).json({message: "Purchased product has not been found!"})
+            }
+
+            res.status(200).json({message: `Purchased product ${purchasedProduct.productName} has been deleted!`})
+        } catch (error) {
+            res.status(500).json({message: error.message})
+        }
+    }
 }) 
 .catch(() => {
     console.log('connection to database failed');
