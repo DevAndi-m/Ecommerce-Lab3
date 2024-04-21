@@ -73,6 +73,10 @@ button, input, label {
     gap: 15px;
 }
 
+.bodyContainer form {
+    width: 50%;
+}
+
 .userSearch {
     margin: 15px auto;
     display: flex;
@@ -207,8 +211,8 @@ button, input, label {
 .rightUserImage {
     position: relative;
     border-radius: 12px;
-    width: 45%;
-    height: 200px;
+    width: 10em;
+    height: 10em;
     overflow: hidden; 
 }
   
@@ -224,8 +228,8 @@ button, input, label {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80%; 
-    height: 80%; 
+    width: 45%;
+    height: 200px;
     background-image: url('https://cdn-icons-png.flaticon.com/512/3342/3342137.png');
     background-size: contain; 
     background-position: center;
@@ -279,7 +283,6 @@ button, input, label {
 }
 
 .infoContainer {
-    width: 47.5%;
     height: 100%;
     background: linear-gradient(-120deg, var(--black), var(--blackSecondary));
     border-radius: 12px;
@@ -439,6 +442,16 @@ button, input, label {
     padding: 5px 10px;
 }
 
+.createCheck {
+    background-color: red;
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+}
+
 .createUserRight {
     width: 40%;
     height: 100%;
@@ -502,4 +515,59 @@ button, input, label {
     background-color: #F53A33;
     color: var(--white);
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+/* DELETE ALERT */
+
+.deleteAlert {
+    width: 15em;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #F53A33;
+    position: absolute;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 0 13.2%;
+    bottom: 15em;
+
+    display: flex;
+    opacity: 1;
+    transition: opacity 2s ease-in-out;
+}
+
+.deleteAlert p {
+    width: 80%;
+    font-size: 14px;
+    text-align: center;
+}
+
+.delBtnCont {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.delBtnCont button {
+    padding: 10px 20px;
+    background-color: black;
+    color: #F53A33;
+    border: none;
+    transition: background 0.1s;
+    border-radius: 5px;
+}
+
+.trueDelete:hover {
+    border-radius: 5px;
+    background-color: #F53A33;
+    color: black;
+    outline: 2px solid black;
+    outline-offset: -2px;
+}
+
+.cancelDeletion:hover {
+    border-radius: 5px;
+    background-color: #5152F5;
+    color: black;
+    outline-offset: -2px;
 }
