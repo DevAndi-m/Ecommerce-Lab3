@@ -306,6 +306,8 @@ function UsersDashboard() {
   </div>
 </form>
       </div>
+
+      {/* CREATE USER CONT */}
       <div className='createUserContainer' style={{ display: 'none' }}>
         <div className='cuTitle'>
           <h1>Create User</h1>
@@ -338,6 +340,23 @@ function UsersDashboard() {
           <div className='createUserRight'>
             <div className='inputPic'>
               <img src={placeholderImg}></img>
+            </div>
+            <div className='profileFind'>
+                <h3>Select a profile picture:</h3>
+                <div className='profilePicContainer'>
+                  <button><img src='https://optimise2.assets-servd.host/maniacal-finch/production/animals/grizzly-bear-01-01.jpg?w=1200&h=1200&auto=compress%2Cformat&fit=crop&dm=1658944720&s=1aa811061c516482fe15273978711bc7'></img></button>
+                  <button><img src='https://www.vidavetcare.com/wp-content/uploads/sites/234/2022/04/boxer-dog-breed-info.jpeg'></img></button>
+                  <button><img src='https://upload.wikimedia.org/wikipedia/commons/5/55/Spitfire_-_Season_Premiere_Airshow_2018_%28cropped%29.jpg'></img></button>
+                  <button><img src='https://hips.hearstapps.com/pop.h-cdn.co/assets/16/48/1600x1200/sd-aspect-1480371374-t-80-tank-engineering-technologies-2010.jpg?resize=1200:*'></img></button>
+                  <button><img src='https://images.prismic.io/carwow/65cbb34b-b61c-48af-b34e-5bd785e95a28_2023+Porsche+911+front+quarter+moving.jpg'></img></button>
+                  <button><img src='https://www.zeidlers.com/assets/img/dictionary/lily-main.jpg'></img></button>
+                  <button><img src='https://www.earth.com/_next/image/?url=https%3A%2F%2Fcff2.earth.com%2Fuploads%2F2023%2F06%2F02100547%2FMountain-2-960x640.jpg&w=3840&q=75'></img></button>
+                  <button><img src='https://miro.medium.com/v2/resize:fit:1200/1*TGATqkXS3Y1FVZIC4X-LzA.png'></img></button>
+                </div>
+                <div className='profileInputPic'>
+                  <h3>or add your own:</h3>
+                  <input type='url' className='profileUrl'></input>
+                </div>
             </div>
             <div className='createUserButtons'>
               <button type='submit' className='createNewUser' onClick={handleCreate}>Create User</button>

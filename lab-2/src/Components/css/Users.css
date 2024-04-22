@@ -464,17 +464,56 @@ button, input, label {
 }
 
 .inputPic {
+    position: relative; /* Add this to establish a positioning context */
     width: 15em;
     height: 15em;
     overflow: hidden;
     border-radius: 12px;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    outline: 1px solid black;
 }
 
 .inputPic img {
     width: 100%; 
     height: 100%;
     object-fit: cover;
+}
+
+.inputPic::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45%;
+    height: 200px;
+    background-image: url('https://cdn-icons-png.flaticon.com/512/3342/3342137.png');
+    background-size: contain; 
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.inputPic::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.inputPic:hover::before {
+    opacity: 1;
+}
+
+.inputPic:hover::after {
+    opacity: 0.5; 
+    cursor: pointer;
 }
 
 .createUserButtons {
@@ -515,6 +554,62 @@ button, input, label {
     background-color: #F53A33;
     color: var(--white);
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+/* Profile picture container */
+.profileFind {
+    width: 80%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+}
+
+.profileFind h3 {
+   text-align: center;
+}
+
+.profilePicContainer {
+    overflow-x: auto; /* Enable horizontal scrolling only inside profilePicContainer */
+    white-space: nowrap; /* Prevent items from wrapping */
+    padding: 10px;
+}
+
+.profilePicContainer button {
+    border: none;
+    outline: 1px solid black;
+    border-radius: 5px;
+    width: 4em;
+    height: 4em;
+    overflow: hidden;
+    margin-right: 10px; 
+    transition: transform 0.1s linear;
+}
+
+.profilePicContainer button:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.profilePicContainer button img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profileInputPic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.profileUrl {
+    border: none;
+    outline: 1px solid black;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: white;
+    width: 90%;
 }
 
 /* DELETE ALERT */
@@ -571,3 +666,5 @@ button, input, label {
     color: black;
     outline-offset: -2px;
 }
+
+
