@@ -45,6 +45,12 @@ function UsersDashboard() {
     userPassword: '',
     userIsAdmin: false,
   });
+
+  const [nameError, setNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [phoneError, setPhoneError] = useState('');
+  const [photoError, setPhotoError] = useState('');
+
   
   const [page, setPage] = useState(1);
   const [users, setUsers] = useState([]);
@@ -54,6 +60,9 @@ function UsersDashboard() {
   const [usernameAvailability, setUsernameAvailability] = useState(true);
   const [emailValidity, setEmailValidity] = useState(true);
   const [emailAvailability, setEmailAvailability] = useState(true);
+  const [phoneValidity, setPhoneValidity] = useState(true);
+  const [phoneAvailability, setPhoneAvailability] = useState(true);
+  const [invalidImageUrl, setInvalidImageUrl] = useState(false);
 
 
   useEffect(() => {
@@ -124,30 +133,77 @@ function UsersDashboard() {
     const { name, value, type, checked } = e.target;
     const newValue = type === 'checkbox' ? checked : value;
     setFormInputs(prevState => ({ ...prevState, [name]: newValue }));
+
+    setNameError('');
+    setEmailError('');
+    setPhoneError('');
   };
   
   const handleUpdateUser = async (e) => {
     e.preventDefault();
   
-    try {
-      const response = await fetch(`http://localhost:5000/api/users/${editingUser._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formInputs),
-      });
+    let isValid = true;
   
-      if (response.ok) {
-        console.log('User updated successfully!');
-      } else {
-        console.error('Error updating user:', response.statusText);
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
+    if (formInputs.userName.trim() === '') {
+      setNameError('Name cannot be empty.');
+      isValid = false;
+    } else {
+      setNameError('');
     }
-  };  
   
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (formInputs.userEmail.trim() === '' || !emailPattern.test(formInputs.userEmail)) {
+      setEmailError('Please enter a valid email address.');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
+  
+    const phonePattern = /^\d{10}$/;
+    if (formInputs.userPhoneNum.trim() === '' || !phonePattern.test(formInputs.userPhoneNum)) {
+      setPhoneError('Please enter a valid phone number.');
+      isValid = false;
+    } else {
+      setPhoneError('');
+    }
+  
+    const imageExtensions = /\.(jpeg|jpg|png|gif)$/i;
+    if (!imageExtensions.test(newUser.selectedFile)) {
+      setPhotoError('Please enter a valid image URL (JPEG, JPG, PNG, GIF).');
+      isValid = false;
+    } else {
+      setPhotoError('');
+    }
+  
+    if (isValid) {
+      try {
+        const response = await fetch(`http://localhost:5000/api/users/${editingUser._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formInputs),
+        });
+
+        if (response.ok) {
+          alert('User has been edited');
+        } else {
+            const data = await response.json();
+            console.error('Error updating user:', data.message);
+
+            if (response.status === 400) {
+                alert('User has not beed editedCheck inputs');
+            } else {
+                alert(data.message);
+            }
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+        alert('An error occurred: ' + error.message); // Show an alert with the error message
+    }
+    }
+  };
+   
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (name === 'profileUrl') {
@@ -189,11 +245,25 @@ function UsersDashboard() {
       setEmailValidity(isValid);
     }, 1000)
   };
-
+  
   const checkEmailAvailability = (email) => {
     setTimeout(() => {
       const isAvailable = !users.find(user => user.userEmail === email);
       setEmailAvailability(isAvailable);
+    }, 500); 
+  };
+
+  const checkPhoneNumberValidity = (phoneNumber) => {
+    setTimeout(() => {
+      const phonePattern = /^[\d -]{10}$/;
+      const isValid = phoneNumber === '' || phonePattern.test(phoneNumber);
+      setPhoneValidity(isValid);
+    }, 500);
+  };  
+  const checkPhoneNumberAvailability = (phoneNumber) => {
+    setTimeout(() => {
+      const isAvailable = !users.find(user => user.userPhoneNum === phoneNumber);
+      setPhoneAvailability(isAvailable);
     }, 500); 
   };
 
@@ -210,11 +280,21 @@ function UsersDashboard() {
     checkEmailAvailability(value);
   };
 
+  const handlePhoneChange = (e) => {
+    const { name, value } = e.target;
+    setNewUser({ ...newUser, [name]: value });
+    const numericValue = value.replace(/\D/g, '');
+    checkPhoneNumberValidity(numericValue);
+    checkPhoneNumberAvailability(numericValue);
+  };
+  
   useEffect(() => {
     checkUsernameAvailability(newUser.name);
     checkEmailValidity(newUser.email);
     checkEmailAvailability(newUser.email);
-  }, []);
+    checkPhoneNumberValidity(newUser.phone);
+    checkPhoneNumberAvailability(newUser.phone)
+  }, [newUser.name, newUser.email, newUser.phone]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -291,9 +371,16 @@ function UsersDashboard() {
 
   const handleImagePaste = (e) => {
     const pastedUrl = e.clipboardData.getData('text');
-    setNewUser({ ...newUser, selectedFile: pastedUrl });
+    const imageExtensions = /\.(jpeg|jpg|png|gif)$/i;
+    
+    if (imageExtensions.test(pastedUrl)) {
+      setNewUser({ ...newUser, selectedFile: pastedUrl });
+      setPhotoError('');
+    } else {
+      setPhotoError('Please paste a valid image URL (JPEG, JPG, PNG, GIF).');
+    }
   };
-
+  
   const handleRefresh = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/users');
@@ -367,14 +454,22 @@ function UsersDashboard() {
               <label>Name: </label>
               <input type='text' value={formInputs.userName} onChange={handleInputChange} name='userName' />
             </div>
+            {nameError && <p className="errorMessage">{nameError}</p>}
             <div className='inpt'>
               <label>Email: </label>
               <input type='email' value={formInputs.userEmail} onChange={handleInputChange} name='userEmail' />
             </div>
+            {emailError && <p className="errorMessage">{emailError}</p>}
             <div className='inpt'>
               <label>Phone Num: </label>
               <input type='tel' value={formInputs.userPhoneNum} onChange={handleInputChange} name='userPhoneNum' />
             </div>
+            {phoneError && <p className="errorMessage">{phoneError}</p>}
+            <div className='inpt'>
+              <label>Img URL: </label>
+              <input type='url' value={formInputs.userProfile} onChange={handleInputChange} name='userProfile' />
+            </div>
+            {photoError && <p className="errorMessage">{photoError}</p>}
           </div>
         </div>
         <div className='rightMoreInfo'>
@@ -434,17 +529,19 @@ function UsersDashboard() {
               {!usernameAvailability && <p className='createError'>Username is taken.</p>}
               <div className='cInput'>
                 <label>Email:</label>
-                <input type='text' name='email' value={newUser.email} onChange={handleEmailChange}></input>
+                <input type='email' name='email' value={newUser.email} onChange={handleEmailChange}></input>
               </div>
-              {!emailValidity && <p>Invalid email format.</p>}
-              {!emailAvailability && <p>Email is already registered.</p>}
+              {!emailValidity && <p className='createError'>Invalid email format.</p>}
+              {!emailAvailability && <p className='createError'>Email is already registered.</p>}
               <div className='cInput'>
                 <label>Phone Number:</label>
-                <input type='text' name='phone' value={newUser.phone} onChange={handleChange}></input>
+                <input type='number' name='phone' value={newUser.phone} onChange={handlePhoneChange}></input>
               </div>
+              {!phoneValidity && <p className='createError'>Please enter a valid phone number.</p>}
+              {!phoneAvailability && <p className='createError'>This phone number is already in use.</p>}
               <div className='cInput'>
                 <label>Password:</label>
-                <input type='text' name='password' value={newUser.password} onChange={handleChange}></input>
+                <input type='password' name='password' value={newUser.password} onChange={handleChange}></input>
               </div>
               <div className='cInput'>
                 <label>Is Admin:</label>
@@ -461,6 +558,7 @@ function UsersDashboard() {
                 <div className='profileInputPic'>
                   <input type='url' className='profileUrl' onPaste={handleImagePaste}></input>
                 </div>
+                {invalidImageUrl && <p className="createError">Please paste a valid image URL (JPEG, JPG, PNG, GIF).</p>}
             </div>
             <div className='createUserButtons'>
               <button type='submit' className='createNewUser'>Create User</button>
