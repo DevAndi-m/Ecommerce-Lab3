@@ -9,13 +9,33 @@ function UsersDashboard() {
     </svg>
   )
 
+  const refreshSymbol = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+      <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+    </svg>
+  )
+
+  const personSymbol = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+      <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5M.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5m15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5"/>
+      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+    </svg>
+  )
+
+  const usersSymbol = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-people" viewBox="0 0 16 16">
+      <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4"/>
+    </svg>
+  )
+
   const [newUser, setNewUser] = useState({
     name: '',
     email: '',
     phone: '',
     password: '',
     isAdmin: false,
-    selectedFile: null 
+    selectedFile: "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
   });  
 
   const [formInputs, setFormInputs] = useState({
@@ -30,6 +50,11 @@ function UsersDashboard() {
   const [users, setUsers] = useState([]);
   const [editingUser, setEditingUser] = useState(null);
   const [throwAlert, setThrowAlert] = useState(false);
+
+  const [usernameAvailability, setUsernameAvailability] = useState(true);
+  const [emailValidity, setEmailValidity] = useState(true);
+  const [emailAvailability, setEmailAvailability] = useState(true);
+
 
   useEffect(() => {
     fetchUsers();
@@ -88,6 +113,8 @@ function UsersDashboard() {
         userPassword: userData.userPassword,
         userIsAdmin: userData.userIsAdmin,
       });
+
+      handleRefresh();
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
@@ -123,10 +150,14 @@ function UsersDashboard() {
   
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const newValue = type === 'checkbox' ? checked : value;
-    setNewUser({ ...newUser, [name]: newValue });
+    if (name === 'profileUrl') {
+      setNewUser({ ...newUser, selectedFile: value });
+    } else {
+      const newValue = type === 'checkbox' ? checked : value;
+      setNewUser({ ...newUser, [name]: newValue });
+    }
   };
-
+  
   const handleDiscard = (e) => {
     e.preventDefault();
     setNewUser({
@@ -141,8 +172,49 @@ function UsersDashboard() {
 
   const handleCreate = () => {
     selectedPage(1);
-
+    handleRefresh();
   }
+
+  const checkUsernameAvailability = (username) => {
+   setTimeout(() => {
+      const isAvailable = !users.find(user => user.userName === username);
+      setUsernameAvailability(isAvailable);
+    }, 500); 
+  };
+
+  const checkEmailValidity = (email) => {
+    setTimeout(() => {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const isValid = email === '' || emailPattern.test(email);
+      setEmailValidity(isValid);
+    }, 1000)
+  };
+
+  const checkEmailAvailability = (email) => {
+    setTimeout(() => {
+      const isAvailable = !users.find(user => user.userEmail === email);
+      setEmailAvailability(isAvailable);
+    }, 500); 
+  };
+
+  const handleUsernameChange = (e) => {
+    const { value } = e.target;
+    setNewUser(prevState => ({ ...prevState, name: value }));
+    checkUsernameAvailability(value);
+  };
+
+  const handleEmailChange = (e) => {
+    const { value } = e.target;
+    setNewUser(prevState => ({ ...prevState, email: value }));
+    checkEmailValidity(value);
+    checkEmailAvailability(value);
+  };
+
+  useEffect(() => {
+    checkUsernameAvailability(newUser.name);
+    checkEmailValidity(newUser.email);
+    checkEmailAvailability(newUser.email);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -152,8 +224,9 @@ function UsersDashboard() {
       userPhoneNum: newUser.phone,
       userPassword: newUser.password,
       userIsAdmin: newUser.isAdmin,
+      userProfile: newUser.selectedFile,
     };
-
+  
     try {
       const response = await fetch('http://localhost:5000/api/users', {
         method: 'POST',
@@ -164,7 +237,18 @@ function UsersDashboard() {
       });
   
       if (response.ok) {
-        console.log('User created successfully!');
+        console.log('User created!');
+        setNewUser({
+          name: '',
+          email: '',
+          phone: '',
+          password: '',
+          isAdmin: false,
+          selectedFile: null,
+        });
+
+        handleCreate();
+        
       } else {
         console.error('Error creating user:', response.statusText);
       }
@@ -172,7 +256,7 @@ function UsersDashboard() {
       console.error('An error occurred:', error);
     }
   };
-
+  
   const handleDeleteUser = async (e) => {
     e.preventDefault();
   
@@ -194,6 +278,8 @@ function UsersDashboard() {
       } else {
         console.error('Error deleting user:', response.statusText);
       }
+
+      handleRefresh();
     } catch (error) {
       console.error('An error occurred:', error);
     }
@@ -202,6 +288,25 @@ function UsersDashboard() {
   const handleAlert = () => {
     setThrowAlert(!throwAlert);
   }
+
+  const handleImagePaste = (e) => {
+    const pastedUrl = e.clipboardData.getData('text');
+    setNewUser({ ...newUser, selectedFile: pastedUrl });
+  };
+
+  const handleRefresh = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/users');
+      const data = await response.json();
+      setUsers(data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const handleCancelChanges = () => {
+    setEditingUser(null);
+  };
   
   return (
     <div className='userMainCont'>
@@ -218,6 +323,11 @@ function UsersDashboard() {
         <div className='listContainer'>
           <div className='userSearch'>
             <input className="userSeachInput" type='text' placeholder='search for a specific user'></input>
+            <h2 onClick={handleRefresh}>{refreshSymbol}</h2>
+            <div className='noUsers'>
+              <p>{usersSymbol}</p>
+              <p>{users.length}</p>
+            </div>
           </div>
           {users.map(user => (
             <div key={user._id} className='userCard'>
@@ -283,13 +393,15 @@ function UsersDashboard() {
         </div>
         <div className='rightBtns'>
           <button className='update' onClick={handleUpdateUser}>Confirm Changes</button>
-          <button className='cancel'>Cancel Changes</button>
+          <button className='cancel' onClick={handleCancelChanges}>Cancel Changes</button>
           <button type='button' className='delete' onClick={handleAlert}>Delete User</button>
         </div>
       </React.Fragment>
     ) : (
       <div className='defaultInfoContainer'>
-        <p>This is the default info container when editing user is false.</p>
+        <h1>{personSymbol}</h1>
+        <h1>Edit User</h1>
+        <h3>Please select a user on the left pannel to edit them</h3>
       </div>
     )}
     {/* DELETE ALERT */}
@@ -317,12 +429,15 @@ function UsersDashboard() {
             <div className='cuInputs'>
               <div className='cInput'>
                 <label>Name:</label>
-                <input type='text' name='name' value={newUser.name} onChange={handleChange}></input>
+                <input type='text' name='name' value={newUser.name} onChange={handleUsernameChange}></input>
               </div>
+              {!usernameAvailability && <p className='createError'>Username is taken.</p>}
               <div className='cInput'>
                 <label>Email:</label>
-                <input type='text' name='email' value={newUser.email} onChange={handleChange}></input>
+                <input type='text' name='email' value={newUser.email} onChange={handleEmailChange}></input>
               </div>
+              {!emailValidity && <p>Invalid email format.</p>}
+              {!emailAvailability && <p>Email is already registered.</p>}
               <div className='cInput'>
                 <label>Phone Number:</label>
                 <input type='text' name='phone' value={newUser.phone} onChange={handleChange}></input>
@@ -338,28 +453,17 @@ function UsersDashboard() {
             </div>
           </div>
           <div className='createUserRight'>
-            <div className='inputPic'>
-              <img src={placeholderImg}></img>
-            </div>
+          <div className='inputPic'>
+            {newUser.selectedFile && <img src={newUser.selectedFile} alt='Profile'></img>}
+          </div>
             <div className='profileFind'>
-                <h3>Select a profile picture:</h3>
-                <div className='profilePicContainer'>
-                  <button><img src='https://optimise2.assets-servd.host/maniacal-finch/production/animals/grizzly-bear-01-01.jpg?w=1200&h=1200&auto=compress%2Cformat&fit=crop&dm=1658944720&s=1aa811061c516482fe15273978711bc7'></img></button>
-                  <button><img src='https://www.vidavetcare.com/wp-content/uploads/sites/234/2022/04/boxer-dog-breed-info.jpeg'></img></button>
-                  <button><img src='https://upload.wikimedia.org/wikipedia/commons/5/55/Spitfire_-_Season_Premiere_Airshow_2018_%28cropped%29.jpg'></img></button>
-                  <button><img src='https://hips.hearstapps.com/pop.h-cdn.co/assets/16/48/1600x1200/sd-aspect-1480371374-t-80-tank-engineering-technologies-2010.jpg?resize=1200:*'></img></button>
-                  <button><img src='https://images.prismic.io/carwow/65cbb34b-b61c-48af-b34e-5bd785e95a28_2023+Porsche+911+front+quarter+moving.jpg'></img></button>
-                  <button><img src='https://www.zeidlers.com/assets/img/dictionary/lily-main.jpg'></img></button>
-                  <button><img src='https://www.earth.com/_next/image/?url=https%3A%2F%2Fcff2.earth.com%2Fuploads%2F2023%2F06%2F02100547%2FMountain-2-960x640.jpg&w=3840&q=75'></img></button>
-                  <button><img src='https://miro.medium.com/v2/resize:fit:1200/1*TGATqkXS3Y1FVZIC4X-LzA.png'></img></button>
-                </div>
+                <h3>Paste image URL:</h3>
                 <div className='profileInputPic'>
-                  <h3>or add your own:</h3>
-                  <input type='url' className='profileUrl'></input>
+                  <input type='url' className='profileUrl' onPaste={handleImagePaste}></input>
                 </div>
             </div>
             <div className='createUserButtons'>
-              <button type='submit' className='createNewUser' onClick={handleCreate}>Create User</button>
+              <button type='submit' className='createNewUser'>Create User</button>
               <button className='discardNewUser' onClick={handleDiscard}>Discard User</button>
             </div>
           </div>

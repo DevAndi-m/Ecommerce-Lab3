@@ -62,6 +62,17 @@ button, input, label {
     height: 81.5vh;
 }
 
+.defaultInfoContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    color: var(--paleWhite);
+}
+
 .listContainer {
     width: 50%;
     height: 100%;
@@ -83,6 +94,29 @@ button, input, label {
     justify-content: center;
 
     height: 80px;
+    width: 70%;
+    align-items: center;
+}
+
+.noUsers {
+    display: flex;
+    gap: 5px;
+    position: relative;
+    left: 50px;
+    color: var(--grey);
+}
+
+.userSearch h2 {
+    position: relative;
+    top: 10px;
+    left: 20px;
+    transition: all 0.1s;
+}
+
+.userSearch h2:hover {
+    transform: scale(1.1);
+    font-weight: bold;
+    color: #5152F5;
 }
 
 .userSeachInput {
@@ -410,6 +444,11 @@ button, input, label {
     position: relative;
 }
 
+.createError {
+    color: #F53A33;
+    font-weight: bold;
+}
+
 .cuTitle {
     font-size: 25px;
     margin-bottom: 20px;
@@ -562,38 +601,8 @@ button, input, label {
     height: fit-content;
     display: flex;
     flex-direction: column;
-}
-
-.profileFind h3 {
-   text-align: center;
-}
-
-.profilePicContainer {
-    overflow-x: auto; /* Enable horizontal scrolling only inside profilePicContainer */
-    white-space: nowrap; /* Prevent items from wrapping */
-    padding: 10px;
-}
-
-.profilePicContainer button {
-    border: none;
-    outline: 1px solid black;
-    border-radius: 5px;
-    width: 4em;
-    height: 4em;
-    overflow: hidden;
-    margin-right: 10px; 
-    transition: transform 0.1s linear;
-}
-
-.profilePicContainer button:hover {
-    cursor: pointer;
-    transform: scale(1.1);
-}
-
-.profilePicContainer button img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    text-align: center;
+    gap: 10px;
 }
 
 .profileInputPic {
@@ -629,6 +638,7 @@ button, input, label {
     display: flex;
     opacity: 1;
     transition: opacity 2s ease-in-out;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
 .deleteAlert p {
