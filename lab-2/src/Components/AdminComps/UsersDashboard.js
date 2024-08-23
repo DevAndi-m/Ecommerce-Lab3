@@ -475,15 +475,15 @@ function UsersDashboard() {
         <div className='rightMoreInfo'>
           <div className='inptMI'>
             <label>Password: </label>
-            <input type='password' value={formInputs.userPassword} onChange={handleInputChange} name='userPassword' />
+            <input type='password' value={formInputs.userPassword} onChange={handleInputChange} name='userPassword' className='inptMIi'/>
           </div>
           <div className='inptMI'>
             <label>Is Admin: </label>
-            <input type='checkbox' checked={formInputs.userIsAdmin} onChange={handleInputChange} name='userIsAdmin' />
+            <input type='checkbox' checked={formInputs.userIsAdmin} onChange={handleInputChange} name='userIsAdmin' className='inptMIi'/>
           </div>
           <div className='inptMI'>
             <label>Date of Creation: </label>
-            <input type='text' value={formatDate(editingUser.userDateOfCreation)} readOnly></input>
+            <input type='text' value={formatDate(editingUser.userDateOfCreation)} readOnly ></input>
           </div>
         </div>
         <div className='rightBtns'>

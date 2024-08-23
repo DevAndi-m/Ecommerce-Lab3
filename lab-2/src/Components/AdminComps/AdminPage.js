@@ -3,7 +3,7 @@ import profileImage from '../placeholderImages/profilePLC.jpg';
 import '../css/AdminPage.css';
 import UsersDashboard from './UsersDashboard';
 import ProductsDashboard from './ProductsDashboard';
-import AdminDashboard from './AdminDashboard';
+import PurchasedProductsDashboard from './PurchasedProductsDashboard';
 import HomePg from './HomePg';
 import DefaultDash from './DefaultDash';
 import AdminCons from './AdminCons';
@@ -40,7 +40,7 @@ export default function AdminPage() {
                             <ul>
                                 <li className={selected === 1 ? 'active' : ''} onClick={() => handleClick(1)}>Users</li>
                                 <li className={selected === 2 ? 'active' : ''} onClick={() => handleClick(2)}>Products</li>
-                                <li className={selected === 3 ? 'active' : ''} onClick={() => handleClick(3)}>Admins</li>
+                                <li className={selected === 3 ? 'active' : ''} onClick={() => handleClick(3)}>Purchased</li>
                             </ul>
                         </div>
                     </div>
@@ -81,7 +81,7 @@ export default function AdminPage() {
                 {selected === null && <DefaultDash />}
                 {selected === 1 && <UsersDashboard />}
                 {selected === 2 && <ProductsDashboard />}
-                {selected === 3 && <AdminDashboard />}
+                {selected === 3 && <PurchasedProductsDashboard />}
                 {selected === 4 && <HomePg />}
                 {selected === 10 && <AdminCons />}
             </div>

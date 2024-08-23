@@ -89,12 +89,11 @@ button, input, label {
 }
 
 .userSearch {
-    margin: 15px auto;
     display: flex;
     justify-content: center;
-
+    margin: auto;
     height: 80px;
-    width: 70%;
+    width: 80%;
     align-items: center;
 }
 
@@ -102,7 +101,7 @@ button, input, label {
     display: flex;
     gap: 5px;
     position: relative;
-    left: 50px;
+    left: 40px;
     color: var(--grey);
 }
 
@@ -342,14 +341,16 @@ button, input, label {
 
 .inptMI {
     display: flex;
-    flex-direction: column;
 
     background-color: var(--white);
     padding: 10px;
     border-radius: 12px;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.inptMI input {
+.inptMI label {
+    width: 50%;
     overflow-x: auto;
     white-space: nowrap;
 
@@ -683,4 +684,107 @@ button, input, label {
     outline-offset: -2px;
 }
 
+@media only screen and (max-width: 1736px) {
 
+    .inpt label, .inpt input {
+        font-size: 18px;
+        align-items: center;
+    }
+
+    .rightUserImage {
+        width: 8em;
+        height: 8em;
+    }
+
+    .rightBtns {
+        flex-direction: column;
+        width: fit-content;
+        gap: 18px;
+        margin: 30px auto;
+    }
+}
+
+@media only screen and (max-width: 1363px) {
+    .header h1{
+        font-size: 40px;
+    }
+
+    .dashboardNav button {
+        font-size: 20px;
+    }
+
+    .inpt label, .inpt input {
+        font-size: 16px;
+    }
+
+    .rightUserImage {
+        width: 6em;
+        height: 6em;
+    }
+
+    .userSearch {
+        margin: 0px auto;
+    }
+
+    .noUsers {
+        left: 20px;
+    }
+
+    .userSearch h2 {
+        left: 10px;
+    }
+}
+
+@media only screen and (max-width: 1173px) {
+    .rightMainUserInfo {
+        flex-direction: column;
+    }
+
+    .rightUserTitle {
+        width: 100%;
+    }
+
+    .rightUserImage {
+        width: 5em;
+        height: 5em;
+    }
+
+    .noUsers {
+        left: 15px;
+    }
+
+    .userSearch h2 {
+        left: 7px;
+    }
+
+    .defaultInfoContainer h3{
+        font-size: 1em;
+    }
+}
+
+@media only screen and (max-width: 1068px) {
+    .header h1{
+        font-size: 25px;
+    } 
+
+    .dashboardNav button {
+        padding: 10px;
+    }
+
+}
+
+@media only screen and (max-width: 1363px) {
+    
+}
+
+@media only screen and (max-width: 1363px) {
+    
+}
+
+@media only screen and (max-width: 1363px) {
+    
+}
+
+@media only screen and (max-width: 1363px) {
+    
+}

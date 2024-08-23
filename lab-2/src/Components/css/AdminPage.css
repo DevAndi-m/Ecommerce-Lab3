@@ -122,6 +122,7 @@ button, input {
 }
 
 .btns {
+    display: flex;
     margin: auto;
 }
 
@@ -166,4 +167,49 @@ li:hover {
     border-radius: 5px;
     cursor: pointer;
     transition: transform 0.3s; 
+}
+
+@media only screen and (max-width: 1530px) {
+    .pimage {
+        width: 80px;
+        height: 80px;
+    }
+
+    .pinfo h3 {
+        font-size: 18px;
+    }
+    .pinfo p {
+        font-size: 16px;
+    }
+}
+
+@media only screen and (max-width: 1252px) {
+    .btns {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .logo h1 {
+        font-size: 1.4em;
+    }
+
+    .pimage {
+        width: 60px;
+        height: 60px;
+    }
+
+    .pinfo h3 {
+        font-size: 16px;
+    }
+    .pinfo p {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 1363px) {
+    
+}
+
+@media only screen and (max-width: 1363px) {
+    
 }
