@@ -2,20 +2,20 @@ import React from 'react'
 import AdminIcons from '../AdminIcons'
 import '../../css/Products.css';
 
-function GeneralProductInfo() {
+function GeneralProductInfo({ purchasedProducts, onRefresh }) {
   return (
     <div className='generalInfo'>
       <div className='giHolder'>
-        <button className='giRefresh'>
-            <p>Refresh Product List</p>
-            <AdminIcons.ArrowClockwiseIcon />
+        <button className='giRefresh' onClick={onRefresh}>
+          <p>Refresh Purchased Product List</p>
+          <AdminIcons.ArrowClockwiseIcon />
         </button>  
         <div className='giTotalProducts'>
-            <p>Total Products Listed:</p>
-            <div>
-              <AdminIcons.ProductIcon />
-              <p>20</p>
-            </div>
+          <p>Total Products Listed:</p>
+          <div>
+            <AdminIcons.ProductIcon />
+            <p>{purchasedProducts.length}</p>
+          </div>
         </div>
       </div>
     </div>

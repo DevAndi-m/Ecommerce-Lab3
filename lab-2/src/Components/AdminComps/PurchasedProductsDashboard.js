@@ -1,8 +1,32 @@
-import React from 'react'
+import React, { useState , useEffect } from 'react';
+import '../css/Products.css';
 import PurchasedFilterSection from './PurchasedProductComps/PurchasedFilterSection';
 import PurchasedProductPlacement from './PurchasedProductComps/PurchasedProductPlacement';
 
 function PurchasedProductsDashboard() {
+
+  const [purchasedProducts, setPurchasedProducts] = useState([]);
+  const [products, setProducts] = useState([]);
+
+  const fetchPurchasedProducts = () => {
+    fetch('http://localhost:5000/api/purchasedProducts')
+      .then(response => response.json())
+      .then(data => setPurchasedProducts(data))
+      .catch(error => console.error('Error fetching products:', error));
+  };
+
+  const fetchProducts = () => {
+    fetch('http://localhost:5000/api/products')
+      .then(response => response.json())
+      .then(data => setProducts(data))
+      .catch(error => console.error('Error fetching products:', error));
+  };
+
+  useEffect(() => {
+    fetchPurchasedProducts();
+    fetchProducts();
+  }, []);
+
   return (
     <div className='pHolder'>
       <div className='header'>
@@ -11,8 +35,15 @@ function PurchasedProductsDashboard() {
           </div>
       </div>
       <div className='mainProducts'>
-        <PurchasedProductPlacement />
-        <PurchasedFilterSection />
+        <PurchasedProductPlacement 
+          products={products} setProducts={setProducts} 
+          purchasedProducts={purchasedProducts} setPurchasedProducts={setPurchasedProducts}  
+          onRefresh={fetchProducts}
+        />
+        <PurchasedFilterSection 
+          purchasedProducts={purchasedProducts} 
+          onRefresh={fetchProducts}
+        />
       </div>
     </div>
   )

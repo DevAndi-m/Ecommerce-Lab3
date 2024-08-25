@@ -1,39 +1,93 @@
-import React from 'react'
+import React, { useState } from 'react';
 import plc from '../../placeholderImages/profilePLC.jpg';
 
-function PurchasedProductCard() {
+function PurchasedProductCard({ product, purchasedProduct, setProducts, setPurchasedProducts, onRefresh }) {
+
+    const [recentlyDeleted, setRecentlyDeleted] = useState(null);
+    const [showDeletedMessage, setShowDeletedMessage] = useState(false);
+    const [progress, setProgress] = useState(0);
+
+    const handleClick = (productID) => {
+        setRecentlyDeleted(productID);
+        setShowDeletedMessage(true);
+        setProgress(0);
+
+        fetch(`http://localhost:5000/api/purchasedProducts/${purchasedProduct._id}`, {
+        method: 'DELETE',
+        })
+        .then(() => {
+        let timer = 0;
+        const interval = setInterval(() => {
+            timer += 100;
+            setProgress((timer / 4000) * 100); // Update progress based on time passed
+            if (timer >= 4000) {
+            clearInterval(interval);
+            setShowDeletedMessage(false);
+            setTimeout(() => {
+                onRefresh();
+            }, 500);
+            }
+        }, 100); // Update every 100ms (0.1s)
+        })
+        .catch(error => console.error('Error deleting product:', error));
+    };
+
+  if (!product) {
+    return null; // Handle the case where product data isn't available
+  }
+
   return (
     <div className='pCardMain'>
-        <div className='rowOne'>
-            <div className='rowOneLeft'>
-                <div className='pCardTitle'>
-                    <h2>Product Title</h2>
-                    <p>Date Purchased: 01/01/0001</p>
-                </div>
-                <div className='pCardDesc'>
-                    <p>Description:</p>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-                </div>
+      <div className='rowOne'>
+        <div className='rowOneLeft'>
+          <div className='pCardTitle'>
+            <h2>{product.productName}</h2>
+            <p>Date Purchased: {new Date(purchasedProduct.productDateOfPurchase).toLocaleDateString()}</p>
+          </div>
+          <div className='pCardDesc'>
+            <p>Description:</p>
+            <p>{product.description}</p>
+          </div>
+        </div>
+        <div className='rowOneRight'>
+          <img src={plc} alt="Product" />
+        </div>
+      </div>
+      <div className='rowTwo'>
+        <button className='delProduct' onClick={() => handleClick(purchasedProduct._id)}>Delete Product</button>
+      </div>
+      <p className='pID'>Single product price: ${product.productPrice}, quantity: {purchasedProduct.quantityPurchased}, TOTAL: ${product.productPrice * purchasedProduct.quantityPurchased}</p>
+      <p className='pID'>Product Category: {product.productCategory}</p>
+      <p className='pID'>Product ID: {product._id}</p>
+      <div className='rowThree'>
+        <p>Published by:</p>
+        <div className='pCardPublisher'>
+          <img src={plc} alt="Publisher" />
+          <p>{product.seller}</p>
+        </div>    
+      </div>
+      <div className='rowThree'>
+        <p>Purchased by:</p>
+        <div className='pCardPublisher'>
+          <img src={plc} alt="Publisher" />
+          <p>{purchasedProduct.buyer}</p>
+        </div>    
+      </div>
+
+      <div className="product-deleted" style={{ transform: showDeletedMessage ? 'translateX(0)' : 'translateX(300px)' }}>
+          <div className='topPD'>
+            <p>Product with ID:</p>
+            <p>{recentlyDeleted}</p>
+            <p>Has been deleted successfully</p>
+          </div>
+          <div className='barPD'>
+            <div className='fullBar' style={{ width: `${progress}%` }}>
+              
             </div>
-            <div className='rowOneRight'>
-                <img src={plc}></img>
-            </div>
-        </div>
-        <div className='rowTwo'>
-            <button className='delProduct'>Delete Product</button>
-        </div>
-        <p className='pID'>Single product price: $21, quantity: 2, total: $42</p>
-        <p className='pID'>Product Category: Toys</p>
-        <p className='pID'>Product ID: ID_OF_PRODUCT</p>
-        <div className='rowThree'>
-            <p>Published by:</p>
-            <div className='pCardPublisher'>
-                <img src={plc}></img>
-                <p>Filhan burri - ID OF USER</p>
-            </div>    
-        </div>
+          </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default PurchasedProductCard
+export default PurchasedProductCard;

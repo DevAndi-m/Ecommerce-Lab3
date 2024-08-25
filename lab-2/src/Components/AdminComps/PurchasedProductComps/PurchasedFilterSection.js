@@ -9,7 +9,7 @@ import FilterMethodDatePurchased from '../PurchasedProductComps/PurchasedFilters
 
 import GeneralProductInfo from './GeneralProductInfo';
 
-function PurchasedFilterSection() {
+function PurchasedFilterSection({ purchasedProducts , onRefresh }) {
   const [selectedFilter, setSelectedFilter] = useState('ID');
 
   const handleFilterClick = (filter) => {
@@ -85,8 +85,7 @@ function PurchasedFilterSection() {
         {renderFilterMethod()}
       </div>
 
-      <GeneralProductInfo />
-      
+      <GeneralProductInfo  purchasedProducts={purchasedProducts} onRefresh={onRefresh} />
     </div>
   );
 }

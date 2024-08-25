@@ -6,7 +6,6 @@ import ProductPlacement from './ProductsComps/ProductPlacement';
 function ProductsDashboard() {
   const [products, setProducts] = useState([]);
 
-  // Function to fetch all products
   const fetchProducts = () => {
     fetch('http://localhost:5000/api/products')
       .then(response => response.json())

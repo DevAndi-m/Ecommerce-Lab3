@@ -4,19 +4,33 @@ import plc from '../../placeholderImages/profilePLC.jpg';
 function ProductCard({ product, setProducts, onRefresh }) {
 
   const [recentlyDeleted, setRecentlyDeleted] = useState(null);
+  const [showDeletedMessage, setShowDeletedMessage] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const handleClick = (productID) => {
-    setRecentlyDeleted(productID)
+    setRecentlyDeleted(productID);
+    setShowDeletedMessage(true);
+    setProgress(0);
 
     fetch(`http://localhost:5000/api/products/${product._id}`, {
       method: 'DELETE',
-    }).then(() => {
-      setTimeout(() => {
-        onRefresh()
-      }, 3000);
+    })
+    .then(() => {
+      let timer = 0;
+      const interval = setInterval(() => {
+        timer += 100;
+        setProgress((timer / 4000) * 100); // Update progress based on time passed
+        if (timer >= 4000) {
+          clearInterval(interval);
+          setShowDeletedMessage(false);
+          setTimeout(() => {
+            onRefresh();
+          }, 500);
+        }
+      }, 100); // Update every 100ms (0.1s)
     })
     .catch(error => console.error('Error deleting product:', error));
-  }
+  };
 
   return (
     <div className='pCardMain'>
@@ -48,16 +62,18 @@ function ProductCard({ product, setProducts, onRefresh }) {
           <p>{product.seller}</p>
         </div>
       </div>
-        <div className="product-deleted">
+      <div className="product-deleted" style={{ transform: showDeletedMessage ? 'translateX(0)' : 'translateX(300px)' }}>
           <div className='topPD'>
             <p>Product with ID:</p>
             <p>{recentlyDeleted}</p>
             <p>Has been deleted successfully</p>
           </div>
           <div className='barPD'>
-            <div className='fullBar' style={{ width: '50%' }}></div>
+            <div className='fullBar' style={{ width: `${progress}%` }}>
+              
+            </div>
           </div>
-        </div>
+      </div>
     </div>
   );
 }

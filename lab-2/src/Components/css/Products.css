@@ -252,7 +252,7 @@
 }
 
 .product-deleted {
-    position: absolute;
+    position: fixed;
     top: 25px;
     background-color: var(--paleWhite);
     padding: 10px 20px;
@@ -260,19 +260,24 @@
     right: 30px;
     color: var(--black);
     text-align: center;
+    transform: translateX(300px);
+    transition: transform 0.5s ease; /* Add transition for smooth movement */
 }
+
 .barPD {
     margin: 5px auto;
     width: 100%;
     border-radius: 10px;
     height: 4px;
-    background-color: rgb(89, 112, 118);
+    background-color: rgb(125, 146, 151);
+    transition: width 0.1s;
 }
 .fullBar {
     height: 100%;
     border-radius: 10px;
     background-color: rgb(5, 106, 169);
     overflow: hidden;
+    transition: width 0.1s;
 }
 
 @media only screen and (min-width: 1797px) {
