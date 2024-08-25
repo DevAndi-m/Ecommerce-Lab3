@@ -1,16 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import '../../css/Products.css';
 import ProductCard from './ProductCard';
 
-function ProductPlacement() {
+function ProductPlacement({ products, setProducts, onRefresh }) {
   return (
     <div className='productPlacement'>
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
-      <ProductCard />
+      {products.map((product) => (
+        <ProductCard
+          key={product._id}
+          product={product}
+          setProducts={setProducts}
+          onRefresh={onRefresh}
+        />
+      ))}
     </div>
-  )
+  );
 }
 
-export default ProductPlacement
+export default ProductPlacement;
+
+

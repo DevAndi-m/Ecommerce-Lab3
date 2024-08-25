@@ -1,40 +1,63 @@
-import React from 'react'
+import React, { useState , useEffect } from 'react';
 import plc from '../../placeholderImages/profilePLC.jpg';
 
-function ProductCard() {
+function ProductCard({ product, setProducts, onRefresh }) {
+
+  const [recentlyDeleted, setRecentlyDeleted] = useState(null);
+
+  const handleClick = (productID) => {
+    setRecentlyDeleted(productID)
+
+    fetch(`http://localhost:5000/api/products/${product._id}`, {
+      method: 'DELETE',
+    }).then(() => {
+      console.log('hello')
+    })
+    .catch(error => console.error('Error deleting product:', error));
+  }
+
   return (
     <div className='pCardMain'>
-        <div className='rowOne'>
-            <div className='rowOneLeft'>
-                <div className='pCardTitle'>
-                    <h2>Product Title</h2>
-                    <p>Date Published: 01/01/0001</p>
-                </div>
-                <div className='pCardDesc'>
-                    <p>Description:</p>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-                </div>
-            </div>
-            <div className='rowOneRight'>
-                <img src={plc}></img>
-            </div>
+      <div className='rowOne'>
+        <div className='rowOneLeft'>
+          <div className='pCardTitle'>
+            <h2>{product.productName}</h2>
+            <p>Date Published: {new Date(product.productDateOfListing).toLocaleDateString()}</p>
+          </div>
+          <div className='pCardDesc'>
+            <p>Description:</p>
+            <p>{product.description}</p>
+          </div>
         </div>
-        <div className='rowTwo'>
-            <button className='delProduct'>Delete Product</button>
+        <div className='rowOneRight'>
+          <img src={plc} alt="Product" />
         </div>
-        <p className='pID'>Product Price: $21</p>
-        <p className='pID'>Product Category: Toys</p>
-        <p className='pID'>Product ID: ID_OF_PRODUCT</p>
-        <div className='rowThree'>
-            <p>Published by:</p>
-            <div className='pCardPublisher'>
-                <img src={plc}></img>
-                <p>Filhan burri - ID OF USER</p>
-            </div>
-            
+      </div>
+      <div className='rowTwo'>
+        <button className='delProduct' onClick={() => handleClick(product._id)}>Delete Product</button>
+      </div>
+      <p className='pID'>Product Price: ${product.productPrice}</p>
+      <p className='pID'>Product Category: {product.productCategory}</p>
+      <p className='pID'>Product ID: {product._id}</p>
+      <div className='rowThree'>
+        <p>Published by:</p>
+        <div className='pCardPublisher'>
+          <img src={plc} alt="Publisher" />
+          <p>{product.seller}</p>
+        </div>
+      </div>
+        <div className="product-deleted">
+          <div className='topPD'>
+            <p>Product with ID:</p>
+            <p>{recentlyDeleted}</p>
+            <p>Has been deleted successfully</p>
+          </div>
+          <div className='barPD'>
+            <div className='fullBar' style={{ width: '50%' }}></div>
+          </div>
         </div>
     </div>
-  )
+  );
 }
 
-export default ProductCard
+export default ProductCard;

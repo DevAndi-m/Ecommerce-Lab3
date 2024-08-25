@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState }from 'react';
 import '../../css/Products.css';
 import FilterMethodCategory from './FilterMethodCategory';
 import FilterMethodDatePublished from './FilterMethodDatePublished';
@@ -8,14 +8,13 @@ import FilterMethodName from './FilterMethodName';
 import FilterMethodUserPublished from './FilterMethodUserPublished';
 import GeneralProductInfo from './GeneralProductInfo';
 
-function FilterSection() {
+function FilterSection({ products, onRefresh }) {
   const [selectedFilter, setSelectedFilter] = useState('ID');
 
   const handleFilterClick = (filter) => {
     setSelectedFilter(filter);
   };
 
-  // Function to render the appropriate component based on the selected filter
   const renderFilterMethod = () => {
     switch (selectedFilter) {
       case 'ID':
@@ -82,12 +81,10 @@ function FilterSection() {
         </div>
       </div>
       <div className='filterMethod'>
-        {/* Render the appropriate filter method component based on the selected filter */}
         {renderFilterMethod()}
       </div>
 
-      <GeneralProductInfo />
-      
+      <GeneralProductInfo products={products} onRefresh={onRefresh} />
     </div>
   );
 }

@@ -1,73 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/product.model.schema');
+const {getProducts , getProductById , createProduct , updateProductById , deleteProductById} = require('../controllers/product.controller.js');
 
-// GET all products
-router.get('/', async (req, res) => {
-    try {   
-        const products = await Product.find({}).lean();
-        res.status(200).json(products);
-    } catch (error) {
-        res.status(500).json({message: error.message})
-    }
-});
+// GET all users
+router.get('/', getProducts);
 
-// GET a single product by ID
-router.get('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const product = await Product.findById(id).lean();
-        if (!product) {
-            return res.status(404).json({ message: "Product not found" });
-        }
-        res.status(200).json(product);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+// GET a single user by ID
+router.get('/:id', getProductById);
 
-// POST a new product
-router.post('/', async (req, res) => {
-    try {
-        const product = await Product.create(req.body);
-        res.status(200).json(product);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+// POST a new user
+router.post('/', createProduct);
 
-// PUT (update) a product by ID
-router.put('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const filter = { _id: id };
-        const updatedProduct = await Product.findOneAndUpdate(filter, req.body, { new: true });
+// PUT (update) a user by ID
+router.put('/:id', updateProductById);
 
-        if (!updatedProduct) {
-            return res.status(404).json({ message: "Product not found!" });
-        }
-
-        res.status(200).json(updatedProduct);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
-
-// DELETE a product by ID
-router.delete('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const filter = { _id: id };
-
-        const product = await Product.findByIdAndDelete(filter);
-        if (!product) {
-            return res.status(404).json({ message: "Product not found!" });
-        }
-
-        res.status(200).json({ message: `Product with ID ${id} has been deleted` });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-});
+// DELETE a user by ID
+router.delete('/:id', deleteProductById);
 
 module.exports = router;

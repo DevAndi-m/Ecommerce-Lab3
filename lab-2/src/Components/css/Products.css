@@ -107,6 +107,7 @@
 
 .rowOne {
     display: flex;
+    gap: 20px;
     justify-content: space-between;
     height: 35vh;
 }
@@ -250,6 +251,30 @@
     gap: 10px;
 }
 
+.product-deleted {
+    position: absolute;
+    top: 25px;
+    background-color: var(--paleWhite);
+    padding: 10px 20px;
+    border-radius: 8px;
+    right: 30px;
+    color: var(--black);
+    text-align: center;
+}
+.barPD {
+    margin: 5px auto;
+    width: 100%;
+    border-radius: 10px;
+    height: 4px;
+    background-color: rgb(89, 112, 118);
+}
+.fullBar {
+    height: 100%;
+    border-radius: 10px;
+    background-color: rgb(5, 106, 169);
+    overflow: hidden;
+}
+
 @media only screen and (min-width: 1797px) {
     .rowOneRight {
         width: 38%; 
@@ -319,7 +344,6 @@
     .rowOne {
         display: flex;
         justify-content: space-between;
-        gap: 20px;
         height: 30vh;
     }
 }

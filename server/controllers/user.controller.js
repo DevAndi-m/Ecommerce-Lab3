@@ -51,7 +51,7 @@ const updateUserById = async (req, res) => {
     }
 };
 
-// DEL user
+// DELLET user
 const deleteUserById = async (req, res) => {
     try {
         const { id } = req.params;
