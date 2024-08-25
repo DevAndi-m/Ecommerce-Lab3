@@ -11,7 +11,9 @@ function ProductCard({ product, setProducts, onRefresh }) {
     fetch(`http://localhost:5000/api/products/${product._id}`, {
       method: 'DELETE',
     }).then(() => {
-      console.log('hello')
+      setTimeout(() => {
+        onRefresh()
+      }, 3000);
     })
     .catch(error => console.error('Error deleting product:', error));
   }
