@@ -12,14 +12,14 @@ function PurchasedProductCard({ product, purchasedProduct, setProducts, setPurch
         setShowDeletedMessage(true);
         setProgress(0);
 
-        fetch(`http://localhost:5000/api/purchasedProducts/${purchasedProduct._id}`, {
+        fetch(`http://localhost:5000/api/purchasedProducts/${productID}`, {
         method: 'DELETE',
         })
         .then(() => {
         let timer = 0;
         const interval = setInterval(() => {
             timer += 100;
-            setProgress((timer / 4000) * 100); // Update progress based on time passed
+            setProgress((timer / 4000) * 100);
             if (timer >= 4000) {
             clearInterval(interval);
             setShowDeletedMessage(false);
@@ -27,13 +27,13 @@ function PurchasedProductCard({ product, purchasedProduct, setProducts, setPurch
                 onRefresh();
             }, 500);
             }
-        }, 100); // Update every 100ms (0.1s)
+        }, 100); 
         })
         .catch(error => console.error('Error deleting product:', error));
     };
 
   if (!product) {
-    return null; // Handle the case where product data isn't available
+    return null; 
   }
 
   return (
@@ -58,7 +58,7 @@ function PurchasedProductCard({ product, purchasedProduct, setProducts, setPurch
       </div>
       <p className='pID'>Single product price: ${product.productPrice}, quantity: {purchasedProduct.quantityPurchased}, TOTAL: ${product.productPrice * purchasedProduct.quantityPurchased}</p>
       <p className='pID'>Product Category: {product.productCategory}</p>
-      <p className='pID'>Product ID: {product._id}</p>
+      <p className='pID'>Product ID: {purchasedProduct._id}</p>
       <div className='rowThree'>
         <p>Published by:</p>
         <div className='pCardPublisher'>

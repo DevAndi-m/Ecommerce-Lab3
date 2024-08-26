@@ -12,7 +12,7 @@ function PurchasedProductsDashboard() {
     fetch('http://localhost:5000/api/purchasedProducts')
       .then(response => response.json())
       .then(data => setPurchasedProducts(data))
-      .catch(error => console.error('Error fetching products:', error));
+      .catch(error => console.error('Error fetching purchased products:', error));
   };
 
   const fetchProducts = () => {
@@ -22,11 +22,15 @@ function PurchasedProductsDashboard() {
       .catch(error => console.error('Error fetching products:', error));
   };
 
-  useEffect(() => {
+  const fetchAll = () => {
     fetchPurchasedProducts();
     fetchProducts();
+  };
+  
+  useEffect(() => {
+    fetchAll();
   }, []);
-
+  
   return (
     <div className='pHolder'>
       <div className='header'>
@@ -38,11 +42,11 @@ function PurchasedProductsDashboard() {
         <PurchasedProductPlacement 
           products={products} setProducts={setProducts} 
           purchasedProducts={purchasedProducts} setPurchasedProducts={setPurchasedProducts}  
-          onRefresh={fetchProducts}
+          onRefresh={fetchAll}
         />
         <PurchasedFilterSection 
           purchasedProducts={purchasedProducts} 
-          onRefresh={fetchProducts}
+          onRefresh={fetchAll}
         />
       </div>
     </div>

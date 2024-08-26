@@ -4,7 +4,6 @@ import '../css/AdminPage.css';
 import UsersDashboard from './UsersDashboard';
 import ProductsDashboard from './ProductsDashboard';
 import PurchasedProductsDashboard from './PurchasedProductsDashboard';
-import HomePg from './HomePg';
 import DefaultDash from './DefaultDash';
 import AdminCons from './AdminCons';
 
@@ -45,20 +44,6 @@ export default function AdminPage() {
                         </div>
                     </div>
                 </div>
-                <div className='pages'>
-                    <h3>Pages</h3>
-                    <div className='db'>
-                        <hr className='line'></hr>
-                        <div className='dashboardEntries'>
-                            <ul>
-                                <li className={selected === 4 ? 'active' : ''} onClick={() => handleClick(4)}>Home</li>
-                                <li className={selected === 5 ? 'active' : ''} onClick={() => handleClick(5)}>Shop</li>
-                                <li className={selected === 6 ? 'active' : ''} onClick={() => handleClick(6)}>Contact</li>
-                                <li className={selected === 7 ? 'active' : ''} onClick={() => handleClick(7)}>About</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
                 <div className='analytics'>
                     <h3>Analytics</h3>
                     <div className='db'>
@@ -82,7 +67,6 @@ export default function AdminPage() {
                 {selected === 1 && <UsersDashboard />}
                 {selected === 2 && <ProductsDashboard />}
                 {selected === 3 && <PurchasedProductsDashboard />}
-                {selected === 4 && <HomePg />}
                 {selected === 10 && <AdminCons />}
             </div>
         </div>

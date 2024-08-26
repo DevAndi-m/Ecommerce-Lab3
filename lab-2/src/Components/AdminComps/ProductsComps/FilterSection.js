@@ -1,14 +1,14 @@
-import React, { useState }from 'react';
+import React, { useState } from 'react';
 import '../../css/Products.css';
 import FilterMethodCategory from './FilterMethodCategory';
 import FilterMethodDatePublished from './FilterMethodDatePublished';
-import FilterMethodDatePurchased from './FilterMethodDatePurchased';
+import FilterMethodQuantity from './FilterMethodQuantity';
 import FilterMethodID from './FilterMethodID';
 import FilterMethodName from './FilterMethodName';
 import FilterMethodUserPublished from './FilterMethodUserPublished';
 import GeneralProductInfo from './GeneralProductInfo';
 
-function FilterSection({ products, onRefresh }) {
+function FilterSection({ products, setFilteredProducts, onRefresh }) {
   const [selectedFilter, setSelectedFilter] = useState('ID');
 
   const handleFilterClick = (filter) => {
@@ -18,17 +18,17 @@ function FilterSection({ products, onRefresh }) {
   const renderFilterMethod = () => {
     switch (selectedFilter) {
       case 'ID':
-        return <FilterMethodID />;
+        return <FilterMethodID products={products} setFilteredProducts={setFilteredProducts} />;
       case 'Name':
-        return <FilterMethodName />;
+        return <FilterMethodName products={products} setFilteredProducts={setFilteredProducts} />;
       case 'User Published':
-        return <FilterMethodUserPublished />;
+        return <FilterMethodUserPublished products={products} setFilteredProducts={setFilteredProducts} />;
       case 'Date Published':
-        return <FilterMethodDatePublished />;
+        return <FilterMethodDatePublished products={products} setFilteredProducts={setFilteredProducts} />;
       case 'Category':
-        return <FilterMethodCategory />;
+        return <FilterMethodCategory products={products} setFilteredProducts={setFilteredProducts} />;
       case 'Date Purchased':
-        return <FilterMethodDatePurchased />;
+        return <FilterMethodQuantity products={products} setFilteredProducts={setFilteredProducts} />;
       default:
         return null;
     }
@@ -53,7 +53,6 @@ function FilterSection({ products, onRefresh }) {
             Product Name
           </button>
         </div>
-
         <div className='rowT'>
           <button
             className={`fsButtons ${selectedFilter === 'User Published' ? 'selected' : ''}`}
@@ -66,7 +65,6 @@ function FilterSection({ products, onRefresh }) {
             Date Published
           </button>
         </div>
-
         <div className='rowTh'>
           <button
             className={`fsButtons ${selectedFilter === 'Category' ? 'selected' : ''}`}
@@ -76,7 +74,7 @@ function FilterSection({ products, onRefresh }) {
           <button
             className={`fsButtons ${selectedFilter === 'Date Purchased' ? 'selected' : ''}`}
             onClick={() => handleFilterClick('Date Purchased')}>
-            Date Purchased
+            Quantity
           </button>
         </div>
       </div>

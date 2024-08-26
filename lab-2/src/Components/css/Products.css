@@ -19,7 +19,6 @@
     flex-direction: column;
     align-items: center;
     width: 30%;
-    height: 20px;
     background: linear-gradient(45deg, var(--blackSecondary), var(--black));
     height: 81.5vh;
     border-radius: 20px;
@@ -41,6 +40,7 @@
     display: flex;
     gap: 20px;
     flex-direction: column;
+    overflow-x: hidden;
     overflow-y: scroll;
     width: 66.5%;
     border-radius: 20px;
@@ -94,6 +94,23 @@
 }
 
 /* Product card css */
+
+.noProducts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    background: -webkit-linear-gradient(var(--grey), var(--black));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.noProducts div{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
 
 .pCardMain {
     display: flex;
@@ -248,6 +265,7 @@
     margin-top: 5px;
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 10px;
 }
 
@@ -261,7 +279,7 @@
     color: var(--black);
     text-align: center;
     transform: translateX(300px);
-    transition: transform 0.5s ease; /* Add transition for smooth movement */
+    transition: transform 0.5s ease; 
 }
 
 .barPD {
@@ -318,7 +336,15 @@
     .rowOneLeft {
         height: 20em;
     }
+
+    .giRefresh {
+        padding: 10px;
+        font-size: 12px;
+    }
     
+    .giTotalProducts {
+        font-size: 12px;
+    }
 }
 
 @media only screen and (max-width: 1513px) {
@@ -391,6 +417,10 @@
         width: 29.8%; 
         position: relative; 
     }
+
+    .giRefresh p{
+        display: none;
+    }
 }
 
 @media only screen and (max-width: 1092px) {
@@ -421,7 +451,23 @@
     }
 }
 
-  
+@media only screen and (max-height: 880px) {
+    .rowTwo {
+        margin-top: 40px;
+    }
+}
+
+@media only screen and (max-height: 820px) {
+    .filterSearch {
+        height: 80vh;
+    }
+}  
+
+@media only screen and (max-height: 770px) {
+    .filterTitle h1 {
+        font-size: 1em;
+    }
+}
 
 
 

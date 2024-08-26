@@ -19,7 +19,7 @@ function ProductCard({ product, setProducts, onRefresh }) {
       let timer = 0;
       const interval = setInterval(() => {
         timer += 100;
-        setProgress((timer / 4000) * 100); // Update progress based on time passed
+        setProgress((timer / 4000) * 100); 
         if (timer >= 4000) {
           clearInterval(interval);
           setShowDeletedMessage(false);
@@ -27,7 +27,7 @@ function ProductCard({ product, setProducts, onRefresh }) {
             onRefresh();
           }, 500);
         }
-      }, 100); // Update every 100ms (0.1s)
+      }, 100); 
     })
     .catch(error => console.error('Error deleting product:', error));
   };

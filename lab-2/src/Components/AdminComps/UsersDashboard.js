@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../css/Users.css';
 import placeholderImg from '../placeholderImages/profilePLC.jpg';
+import AdminIcons from './AdminIcons';
 
 function UsersDashboard() {
   const dangerIcon = (
@@ -57,6 +58,8 @@ function UsersDashboard() {
   const [editingUser, setEditingUser] = useState(null);
   const [throwAlert, setThrowAlert] = useState(false);
 
+  const [searchTerm, setSearchTerm] = useState('');
+
   const [usernameAvailability, setUsernameAvailability] = useState(true);
   const [emailValidity, setEmailValidity] = useState(true);
   const [emailAvailability, setEmailAvailability] = useState(true);
@@ -82,6 +85,14 @@ function UsersDashboard() {
       console.error('Error fetching users:', error);
     }
   };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  };
+  
+  const filteredUsers = users.filter(user =>
+    user.userName.toLowerCase().includes(searchTerm)
+  );
 
   const selectedPage = (pageNum) => {
     const buttonPageOne = document.getElementsByClassName('ulU')[0];
@@ -199,7 +210,7 @@ function UsersDashboard() {
         }
     } catch (error) {
         console.error('An error occurred:', error);
-        alert('An error occurred: ' + error.message); // Show an alert with the error message
+        alert('An error occurred: ' + error.message); 
     }
     }
   };
@@ -382,13 +393,7 @@ function UsersDashboard() {
   };
   
   const handleRefresh = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/users');
-      const data = await response.json();
-      setUsers(data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
+    fetchUsers();
   };
 
   const handleCancelChanges = () => {
@@ -409,37 +414,50 @@ function UsersDashboard() {
       <div className='bodyContainer'>
         <div className='listContainer'>
           <div className='userSearch'>
-            <input className="userSeachInput" type='text' placeholder='search for a specific user'></input>
+          <input
+            className="userSeachInput"
+            type="text"
+            placeholder="Search for a specific user"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
             <h2 onClick={handleRefresh}>{refreshSymbol}</h2>
             <div className='noUsers'>
               <p>{usersSymbol}</p>
               <p>{users.length}</p>
             </div>
           </div>
-          {users.map(user => (
-            <div key={user._id} className='userCard'>
-              <div className='mainInfo'>
-                <div className='userMainInfo'>
-                  <div className='userImg'>
-                    <img src={user.userProfile || placeholderImg} alt='Profile'></img>
-                  </div>
-                  <div className='userTitle'>
-                    <h3>{user.userName}</h3>
-                    <p>{user.userEmail}</p>
+                {filteredUsers.length > 0 ? (
+            filteredUsers.map(user => (
+              <div key={user._id} className='userCard'>
+                <div className='mainInfo'>
+                  <div className='userMainInfo'>
+                    <div className='userImg'>
+                      <img src={user.userProfile || placeholderImg} alt='Profile'></img>
+                    </div>
+                    <div className='userTitle'>
+                      <h3>{user.userName}</h3>
+                      <p>{user.userEmail}</p>
+                    </div>
+                  </div>  
+                  <div className='userBtn'>
+                    <button className='editBtn' onClick={() => handleEditUser(user._id)}>Edit User</button>
                   </div>
                 </div>
-                <div className='userBtn'>
-                  <button className='editBtn' onClick={() => handleEditUser(user._id)}>Edit User</button>
+                <div className='userInfo'>
+                  <p className='passwordEl'>Password: {user.userPassword}</p>
+                  <p className='phoneEl'>Phone number: {user.userPhoneNum}</p>
+                  <p className='dateOfCreation'>Account created at: {formatDate(user.userDateOfCreation)}</p>
+                  <p className='userId'>User ID: {user._id}</p>
                 </div>
               </div>
-              <div className='userInfo'>
-                <p className='passwordEl'>Password: {user.userPassword}</p>
-                <p className='phoneEl'>Phone number: {user.userPhoneNum}</p>
-                <p className='dateOfCreation'>Account created at: {formatDate(user.userDateOfCreation)}</p>
-                <p className='userId'>User ID: {user._id}</p>
-              </div>
+            ))
+          ) : (
+            <div className='zeroUsers'>
+              <h1>We couldn't find any users with the name: "{searchTerm}"</h1>
+              <AdminIcons.sadIcon />
             </div>
-          ))}
+          )}
         </div>
         <form>
   <div className='infoContainer'>

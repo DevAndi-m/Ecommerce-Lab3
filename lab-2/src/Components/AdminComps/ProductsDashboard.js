@@ -5,11 +5,15 @@ import ProductPlacement from './ProductsComps/ProductPlacement';
 
 function ProductsDashboard() {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   const fetchProducts = () => {
     fetch('http://localhost:5000/api/products')
       .then(response => response.json())
-      .then(data => setProducts(data))
+      .then(data => {
+        setProducts(data);
+        setFilteredProducts(data); // Initially, show all products
+      })
       .catch(error => console.error('Error fetching products:', error));
   };
 
@@ -25,8 +29,8 @@ function ProductsDashboard() {
         </div>
       </div>
       <div className='mainProducts'>
-        <ProductPlacement products={products} setProducts={setProducts} onRefresh={fetchProducts} />
-        <FilterSection products={products} onRefresh={fetchProducts} />
+        <ProductPlacement products={filteredProducts} setProducts={setProducts} onRefresh={fetchProducts} />
+        <FilterSection products={products} setFilteredProducts={setFilteredProducts} onRefresh={fetchProducts} />
       </div>
     </div>
   );
