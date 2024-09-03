@@ -8,17 +8,26 @@ function PurchasedProductsDashboard() {
   const [purchasedProducts, setPurchasedProducts] = useState([]);
   const [products, setProducts] = useState([]);
 
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filteredPurchasedProducts, setFilteredPurchasedProducts] = useState([]);
+
   const fetchPurchasedProducts = () => {
     fetch('http://localhost:5000/api/purchasedProducts')
       .then(response => response.json())
-      .then(data => setPurchasedProducts(data))
+      .then(data => {
+        setPurchasedProducts(data)
+        setFilteredPurchasedProducts(data)
+      })
       .catch(error => console.error('Error fetching purchased products:', error));
   };
 
   const fetchProducts = () => {
     fetch('http://localhost:5000/api/products')
       .then(response => response.json())
-      .then(data => setProducts(data))
+      .then(data => {
+        setProducts(data);
+        setFilteredProducts(data); 
+      })
       .catch(error => console.error('Error fetching products:', error));
   };
 
@@ -40,12 +49,13 @@ function PurchasedProductsDashboard() {
       </div>
       <div className='mainProducts'>
         <PurchasedProductPlacement 
-          products={products} setProducts={setProducts} 
-          purchasedProducts={purchasedProducts} setPurchasedProducts={setPurchasedProducts}  
+          products={filteredProducts} setProducts={setProducts} 
+          purchasedProducts={filteredPurchasedProducts} setPurchasedProducts={setPurchasedProducts}  
           onRefresh={fetchAll}
         />
         <PurchasedFilterSection 
-          purchasedProducts={purchasedProducts} 
+          products={products} setFilteredProducts={setFilteredProducts}
+          purchasedProducts={purchasedProducts} setFilteredPurchasedProducts={setFilteredPurchasedProducts}  
           onRefresh={fetchAll}
         />
       </div>

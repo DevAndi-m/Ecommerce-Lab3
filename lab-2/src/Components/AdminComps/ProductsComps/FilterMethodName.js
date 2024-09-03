@@ -3,12 +3,14 @@ import '../../css/Products.css';
 
 function FilterMethodName({ products, setFilteredProducts }) {
   const [searchName, setSearchName] = useState('');
+  const [filteredCount, setFilteredCount] = useState(null);
 
   const handleSearch = () => {
     const filtered = products.filter(product =>
       product.productName.toLowerCase().includes(searchName.toLowerCase())
     );
     setFilteredProducts(filtered);
+    setFilteredCount(filtered.length);
   };
 
   return (
@@ -20,6 +22,9 @@ function FilterMethodName({ products, setFilteredProducts }) {
         onChange={(e) => setSearchName(e.target.value)} 
       />
       <button className='fsButtons' onClick={handleSearch}>Search</button>
+      {filteredCount !== null && (
+        <p>{filteredCount} {filteredCount === 1 ? 'result' : 'results'} found</p>
+      )}
     </div>
   );
 }

@@ -5,6 +5,8 @@ function FilterMethodDatePublished({ products, setFilteredProducts }) {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
+  const [filteredCount, setFilteredCount] = useState(null);
+
   const handleSearch = () => {
     if (startDate && endDate) {
       const filtered = products.filter(product => {
@@ -12,8 +14,10 @@ function FilterMethodDatePublished({ products, setFilteredProducts }) {
         return productDate >= new Date(startDate) && productDate <= new Date(endDate);
       });
       setFilteredProducts(filtered);
+      setFilteredCount(filtered.length);
     } else {
       setFilteredProducts([]);
+      setFilteredCount(0);
     }
   };
 
@@ -31,6 +35,9 @@ function FilterMethodDatePublished({ products, setFilteredProducts }) {
         </div>
       </div>
       <button className='fsButtons' onClick={handleSearch}>Search</button>
+      {filteredCount !== null && (
+        <p>{filteredCount} {filteredCount === 1 ? 'result' : 'results'} found</p>
+      )}
     </div>
   );
 }

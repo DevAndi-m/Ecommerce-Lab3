@@ -18,10 +18,10 @@ function ProductPlacement({ products, setProducts, onRefresh }) {
       ) : (
         <div className='noProducts'>
           <div>
-            <h1>Product Not Found</h1>
+            <h1>Products Not Found</h1>
             <AdminIcons.sadIcon />
           </div>
-          <h3>We couldn't find a product with the given input...</h3>
+          <h3>We couldn't find a product to show you...</h3>
         </div>
       )}
     </div>

@@ -12,7 +12,7 @@ function ProductsDashboard() {
       .then(response => response.json())
       .then(data => {
         setProducts(data);
-        setFilteredProducts(data); // Initially, show all products
+        setFilteredProducts(data); 
       })
       .catch(error => console.error('Error fetching products:', error));
   };

@@ -9,7 +9,7 @@ import FilterMethodDatePurchased from '../PurchasedProductComps/PurchasedFilters
 
 import GeneralProductInfo from './GeneralProductInfo';
 
-function PurchasedFilterSection({ purchasedProducts , onRefresh }) {
+function PurchasedFilterSection({ products, setFilteredProducts, purchasedProducts, setFilteredPurchasedProducts , onRefresh }) {
   const [selectedFilter, setSelectedFilter] = useState('ID');
 
   const handleFilterClick = (filter) => {
@@ -19,17 +19,17 @@ function PurchasedFilterSection({ purchasedProducts , onRefresh }) {
   const renderFilterMethod = () => {
     switch (selectedFilter) {
       case 'ID':
-        return <FilterMethodIDPurchased />;
+        return <FilterMethodIDPurchased purchasedProducts={purchasedProducts} products={products} setFilteredPurchasedProducts={setFilteredPurchasedProducts} setFilteredProducts={setFilteredProducts}/>;
       case 'Name':
-        return <FilterMethodNamePurchased />;
+        return <FilterMethodNamePurchased purchasedProducts={purchasedProducts} products={products} setFilteredPurchasedProducts={setFilteredPurchasedProducts} setFilteredProducts={setFilteredProducts}/>;
       case 'User Published':
-        return <FilterMethodUserPublishedPurchased />;
+        return <FilterMethodUserPublishedPurchased purchasedProducts={purchasedProducts} products={products} setFilteredPurchasedProducts={setFilteredPurchasedProducts} setFilteredProducts={setFilteredProducts}/>;
       case 'Buyer Purchased':
-        return <FilterMethodBuyerPurchased />;
+        return <FilterMethodBuyerPurchased purchasedProducts={purchasedProducts} products={products} setFilteredPurchasedProducts={setFilteredPurchasedProducts} setFilteredProducts={setFilteredProducts}/>;
       case 'Category':
-        return <FilterMethodCategoryPurchased />;
+        return <FilterMethodCategoryPurchased purchasedProducts={purchasedProducts} products={products} setFilteredPurchasedProducts={setFilteredPurchasedProducts} setFilteredProducts={setFilteredProducts}/>;
       case 'Date Purchased':
-        return <FilterMethodDatePurchased />;
+        return <FilterMethodDatePurchased purchasedProducts={purchasedProducts} products={products} setFilteredPurchasedProducts={setFilteredPurchasedProducts} setFilteredProducts={setFilteredProducts}/>;
       default:
         return null;
     }
