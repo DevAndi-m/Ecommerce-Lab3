@@ -142,6 +142,18 @@ button, input {
     font-weight: 600;
 }
 
+.lgout:hover {
+    background-color: var(--white);
+    color: var(--black);
+}
+
+.swtch:hover {
+    background-color: transparent;
+    color: var(--white);
+    outline: 2px solid var(--white);
+    outline-offset: -2px;
+}
+
 .swtch {
     border: none;
     background-color: var(--white);

@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import profileImage from '../placeholderImages/profilePLC.jpg';
 import '../css/AdminPage.css';
-import UsersDashboard from './UsersDashboard';
-import ProductsDashboard from './ProductsDashboard';
-import PurchasedProductsDashboard from './PurchasedProductsDashboard';
-import DefaultDash from './DefaultDash';
-import AdminCons from './AdminCons';
+import UsersDashboard from '../AdminComps/UsersDashboard';
+import ProductsDashboard from '../AdminComps/ProductsDashboard';
+import PurchasedProductsDashboard from '../AdminComps/PurchasedProductsDashboard';
+import DefaultDash from '../AdminComps/DefaultDash';
+import AdminCons from '../AdminComps/AdminCons';
+import { Link } from 'react-router-dom';
 
 export default function AdminPage() {
 
@@ -59,7 +60,10 @@ export default function AdminPage() {
                 </div>
                 <div className='btns'>
                     <button className='lgout'>Log out</button>
-                    <button className='swtch'>Switch account</button>
+                    <Link to='/home'>
+                        <button className='swtch'>Back to shop</button>
+                    </Link>
+                    
                 </div>
             </div>
             <div className='mainContainer'>
