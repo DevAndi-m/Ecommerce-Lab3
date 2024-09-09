@@ -1,4 +1,6 @@
 const User = require('../models/user.model.schema.js');
+const bcrypt = require('bcryptjs'); // For hashing passwords
+const jwt = require('jsonwebtoken');
 
 // GET all users
 const getUsers = async (req, res) => {
@@ -68,10 +70,72 @@ const deleteUserById = async (req, res) => {
     }
 };
 
+const registerUser = async (req, res) => {
+    const { userName, userEmail, userPassword } = req.body;
+
+    try {
+        // Check if user already exists
+        const existingUser = await User.findOne({ userEmail });
+        if (existingUser) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+
+        // Hash the password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(userPassword, salt);
+
+        // Create new user
+        const newUser = new User({
+            userName,
+            userEmail,
+            userPassword: hashedPassword
+        });
+
+        await newUser.save();
+
+        // Optionally generate a JWT token
+        const token = jwt.sign({ id: newUser._id }, 'secretKey', { expiresIn: '1h' });
+
+        res.status(201).json({ message: 'User registered successfully', token });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// LOGIN a user
+const loginUser = async (req, res) => {
+    const { userEmail, userPassword } = req.body;
+
+    try {
+        // Check if user exists
+        const user = await User.findOne({ userEmail });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Compare password with the hashed password in the database
+        const isMatch = await bcrypt.compare(userPassword, user.userPassword);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
+        // Optionally generate a JWT token
+        const token = jwt.sign({ id: user._id }, 'secretKey', { expiresIn: '1h' });
+
+        res.status(200).json({ message: 'Login successful', token });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getUsers,
     getUserById,
     createUser,
     updateUserById,
-    deleteUserById
+    deleteUserById,
+    registerUser,
+    loginUser,
 };

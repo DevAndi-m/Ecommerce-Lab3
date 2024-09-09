@@ -5,6 +5,7 @@ import ShopPage from '../src/Components/Pages/ShopPage';
 import AccountPage from '../src/Components/Pages/AccountPage';
 import AdminPage from '../src/Components/Pages/AdminPage'
 import NoPage from './Components/Pages/NoPage';
+import CartPage from './Components/Pages/CartPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path='/shop' element={<ShopPage />} />
           <Route path='/account' element={<AccountPage />} />
           <Route path='/admin' element={<AdminPage />} />
+          <Route path='/myCart' element={<CartPage />} />
           <Route path='*' element={<NoPage />} />
         </Routes>
       </BrowserRouter>

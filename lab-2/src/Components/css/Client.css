@@ -32,7 +32,7 @@ a{
 p{
     color: #555;
 }
-.container1{
+.container1 {
     max-width: 1300px;
     margin: auto;
     padding-left: 25px;
@@ -45,14 +45,14 @@ p{
     justify-content: space-around;
 }
 
-.col1-2{
+.col1-2 {
     flex-basis: 50%;
     min-width: 300px;
 }
-.col1-2 img{
+.col1-2 img {
     max-width: 100%;
     padding: 50px 0;
-} 
+}
 
 .col1-2 h1{
     font-size: 50px;
@@ -259,17 +259,28 @@ ul{
     text-align: center;
 }
 
-
-
 .menu-icon1{
     width: 28px;
     margin-left: 20px;  
     display:none;
+    cursor: pointer;
+}
+
+.accErrorTxt {
+    position: relative;
+    top: 10px;
+    font-weight: bold;
+    color: rgb(191, 43, 43);
 }
 
 /*-----------------------media query for menu -----------------------*/
+
 @media only screen and (max-width:800px){
-    nav ul{
+    .navbar1 {
+        justify-content: space-between;
+    }
+
+    .nav1 ul{
         position: absolute;
         top:70px;
         left: 0;
@@ -279,40 +290,59 @@ ul{
         transition: max-height 0.5s;
         
     }
-    nav ul li{
+    .nav1 ul li{
         display: block;
         margin-right: 50px;
         margin-top: 10px;
         margin-bottom: 10px;
     }
-    nav ul li a{
+    .nav1 ul li a{
         color: #fff;
     }
-    .menu-icon{ 
-        display:block;
+    .menu-icon1{ 
         cursor: pointer;
     }
+
+    .nav1 {
+        display: none;
+      }
+    
+      .nav1.open {
+        display: block;
+        top: 20px; /* Adjust this to your header height */
+        background-color: white;
+        width: 100%;
+      }
+    
+      .nav1 ul {
+        flex-direction: column;
+        text-align: center;
+      }
+    
+      .menu-icon1 {
+        display: block;
+      }
 }
 
 /*-----------------------media query for less than 600 screen size(mobile device) -----------------------*/
 @media only screen and (max-width:600px){
-    .row{
+    .row1{
         text-align: center;
     }
     .col1-2 .col1-3 .col1-4{
         flex-basis: 100%;
     }
-    .single-product .row{
+    .single-product1 .row{
         text-align: left;
     }
-    .single-product .col-2{
+    .single-product1 .col1-2{
         padding: 20px 0;
     }
-    .single-product h1{
+    .single-product1 h1{
         font-size: 20px;
         line-height: 32px;
     }
-    .cart-info p{
+    .cart-info1 p{
         display: none;
     }
     
@@ -353,26 +383,26 @@ select:focus{
 
 /*-----------------------single product details -----------------------*/
 
-.single-product{
+.single-product1{
     margin-top: 80px;
 }
-.single-product .col-2 img{
+.single-product1 .col1-2 img{
     padding:0;
 }
-.single-product .col-2{
+.single-product1 .col1-2{
     padding:20px;
 }
-.single-product h4{
+.single-product1 h4{
     margin: 20px 0;
     font-size: 22px;
     font-weight: bold;
 }
-.single-product select{
+.single-product1 select{
     display: block;
     padding: 10px;
     margin-top: 20px;
 }
-.single-product input{
+.single-product1 input{
     width: 50px;
     height: 40px;
     padding-left: 10px;
@@ -383,15 +413,15 @@ select:focus{
 input:focus{
     outline: none;
 }
-.single-product .fa{
+.single-product1 .fa1{
     color:#ff523b;
     margin-left: 10px;
 }
-.small-img-row{
+.small-img-row1{
    display:flex;
     justify-content: space-between;
 }
-.small-img-col{
+.small-img-col1{
     flex-basis: 24%;
     cursor: pointer;
 }
@@ -400,7 +430,7 @@ input:focus{
 
 
         /*------------------------------ cart items ------------------------------*/
-.cart-page{
+.cart-page1{
     margin: 80px auto;
 }
 
@@ -409,7 +439,7 @@ table{
     border-collapse: collapse;
 }
 
-.cart-info{
+.cart-info1{
     display:flex;
     flex-wrap: wrap;
 }
@@ -437,11 +467,11 @@ td img{
     height: 80px;
     margin-right: 10px;
 }
-.total-price{
+.total-price1{
     display: flex;
     justify-content: flex-end;
 }
-.total-price table{
+.total-price1 table{
     border-top: 3px solid #ff523b;
     width: 100%;
     max-width: 400px;
@@ -455,23 +485,24 @@ th:last-child{
 
 
         /*------------------------------ account-page ------------------------------*/
-.account-page1{
+.account-page1 {
     padding: 50px 0;
     background: radial-gradient(#fff, #ffd6d6);
 }
-.form-container1{
+
+.form-container1 {
     background: #fff;
-    width:300px;
+    width: 300px;
     height: 400px;
     position: relative;
     text-align: center;
     padding: 20px 0;
     margin: auto;
-    box-shadow: 0 0 20px 0px rgba(0,0,0,0.1);
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
-.form-container1 span{
+.form-container1 span {
     font-weight: bold;
     padding: 0 10px;
     color: #555;
@@ -480,18 +511,21 @@ th:last-child{
     display: inline-block;
 }
 
-.form-btn1{
-    display:inline-block;
+.form-btn1 {
+    display: inline-block;
+    position: relative;
 }
-.form-container1 form{
+
+.form-container1 form {
+    width: 100%;
     max-width: 300px;
     padding: 0 20px;
     position: absolute;
     top: 130px;
-    transition: transform 1s;
+    transition: transform 0.5s ease-in-out;
 }
 
-#LoginForm1 input{
+#LoginForm1 input, #RegForm1 input {
     width: 100%;
     height: 30px;
     margin: 10px 0;
@@ -499,33 +533,21 @@ th:last-child{
     border: 1px solid #ccc;
 }
 
-#LoginForm1 .btn{
+#LoginForm1 .btn1, #RegForm1 .btn1 {
     width: 100%;
-    border:none;
-    cursor:pointer;
-    margin:10px 0;
+    border: none;
+    cursor: pointer;
+    margin: 10px 0;
 }
 form .btn1:focus{
     outline: none;
 }
 
-#LoginForm1{
-    left: -300px;
-}
-#RegForm1{
-    left: 0;
-}
-#RegForm1 a, #LoginForm1 a{
-    font-size: 12px;
-}
-
-#Indicator{
+#Indicator {
     width: 100px;
     border: none;
     background: #ff523b;
     height: 3px;
     margin-top: 8px;
-    transform: translateX(100px);
-    transition: transform 1s;
-
+    transition: transform 0.3s ease-in-out;
 }
