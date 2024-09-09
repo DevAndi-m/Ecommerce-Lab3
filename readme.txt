@@ -105,9 +105,15 @@ app.use(function(req, res, next) {
 
 para se me fillu serverin btw.
 
+// TODO (chronological)
 
+#1 - show all products,
+#2 - make view single product
+#3 - make addToCart with user (addToCart -> isLoggedIn = false -> send to AccoutPage)
+#4 - Show added to cart products of user. (not saved if logged off)
+#5 - Show purchase history of user (purchasedProudcts)
+#6 - Make CreateListing/MyProductsForSale (CRUD)
 
-
-
+#7 MAKE IMAGES WORK!!! 
 
 
