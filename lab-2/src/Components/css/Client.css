@@ -273,6 +273,21 @@ ul{
     color: rgb(191, 43, 43);
 }
 
+.accNoErrorTxt {
+    position: relative;
+    top: 10px;
+    font-weight: bold;
+    color: rgb(7, 222, 93);
+}
+
+.tkn {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    color: #818181;
+    font-weight: bold;
+}
+
 /*-----------------------media query for menu -----------------------*/
 
 @media only screen and (max-width:800px){

@@ -1,17 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ClientHeader from '../ClientComps/ClientHeader';
 import productImage from '../images/image1.png';
 import ClientFooter from '../ClientComps/ClientFooter';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 const AccountPage = () => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({ username: '', email: '', password: '' });
+  const [isLogin, setIsLogin] = useState(false);
+  const [formData, setFormData] = useState({ userName: '', userEmail: '', userPassword: '' });
   const [error, setError] = useState('');
+  const [noError, setnoError] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [tokenValid, setTokenValid] = useState(false);
+
+  useEffect(() => {
+    const checkTokenValidity = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        const isTokenValid = decodedToken.exp * 1000 > Date.now(); // Check if token is expired
+
+        setTokenValid(isTokenValid);
+        setIsLoggedIn(isTokenValid); // Set login state based on token validity
+      }
+    };
+
+    // Check every second
+    const intervalId = setInterval(checkTokenValidity, 1000);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handleToggle = (login) => {
     setIsLogin(login);
-    setError(''); // Clear error when switching between forms
+    setError('');
+    setnoError('');
   };
 
   const handleInputChange = (e) => {
@@ -23,16 +47,30 @@ const AccountPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(''); // Clear any previous errors
+    setError('');
 
-    const url = isLogin ? '/api/users/login' : '/api/users/register';
-    
+    const url = isLogin ? 'http://localhost:5000/api/users/login' : 'http://localhost:5000/api/users/register';
+
     try {
-      const response = await axios.post(url, formData);
-      // Handle success (e.g., navigate to the dashboard or show a success message)
-      console.log('Success:', response.data);
+      const response = await axios.post(url, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const token = response.data.token;
+      if (token) {
+        localStorage.setItem('token', token);
+
+        const decodedToken = jwtDecode(token);
+        const isTokenValid = decodedToken.exp * 1000 > Date.now();
+
+        setTokenValid(isTokenValid);
+        setIsLoggedIn(isTokenValid);
+
+        setnoError('Success!');
+      }
     } catch (error) {
-      // Handle error and show the error message
       setError(error.response?.data?.message || 'Something went wrong!');
     }
   };
@@ -69,22 +107,23 @@ const AccountPage = () => {
                   >
                     <input
                       type="text"
-                      name="username"
+                      name="userName"
                       placeholder="Username"
-                      value={formData.username}
+                      value={formData.userName}
                       onChange={handleInputChange}
                       required
                     />
                     <input
                       type="password"
-                      name="password"
+                      name="userPassword"
                       placeholder="Password"
-                      value={formData.password}
+                      value={formData.userPassword}
                       onChange={handleInputChange}
                       required
                     />
                     <button type="submit" className="btn1">Login</button>
                     <a href="/">Forgot password?</a>
+                    {noError && <p className="accNoErrorTxt">{noError}</p>}
                     {error && <p className="accErrorTxt">{error}</p>}
                   </form>
                   <form
@@ -96,31 +135,35 @@ const AccountPage = () => {
                   >
                     <input
                       type="text"
-                      name="username"
+                      name="userName"
                       placeholder="Username"
-                      value={formData.username}
+                      value={formData.userName}
                       onChange={handleInputChange}
                       required
                     />
                     <input
                       type="email"
-                      name="email"
+                      name="userEmail"
                       placeholder="Email"
-                      value={formData.email}
+                      value={formData.userEmail}
                       onChange={handleInputChange}
                       required
                     />
                     <input
                       type="password"
-                      name="password"
+                      name="userPassword"
                       placeholder="Password"
-                      value={formData.password}
+                      value={formData.userPassword}
                       onChange={handleInputChange}
                       required
                     />
                     <button type="submit" className="btn1">Register</button>
+                    {noError && <p className="accNoErrorTxt">{noError}</p>}
                     {error && <p className="accErrorTxt">{error}</p>}
                   </form>
+
+                    {isLoggedIn && <p className='tkn'>Token Valid</p>}
+                    {!isLoggedIn && <p className='tkn'>Token Not Valid</p>}
                 </div>
               </div>
             </div>
