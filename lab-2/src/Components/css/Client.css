@@ -126,6 +126,22 @@ p{
 .btn1:hover{
     background: #563434;
 }
+
+.btn12{
+    display: inline-block;
+    background: #ff523b;
+    color: #fff;
+    padding:8px 30px;
+    margin: 30px 20px;
+    border-radius: 30px;
+    transition: all 0.5s;
+    border: 1px solid #ff523b;
+}
+.btn12:hover{
+    background: #563434;
+    border: 1px solid #563434;
+}
+
 .header1{
     background: radial-gradient(#fff, #ffd6d6);
 }
@@ -158,6 +174,7 @@ p{
     min-width: 200px;
     margin-bottom: 50px;
     transition: transform 0.5s;
+    cursor: pointer;
 }
 .col1-4 img{
     width:100%;
@@ -332,10 +349,18 @@ ul{
     color: rgb(191, 43, 43);
 }
 
+.er {
+    color: rgb(191, 43, 43);
+}
+
 .accNoErrorTxt {
     position: relative;
     top: 10px;
     font-weight: bold;
+    color: rgb(7, 222, 93);
+}
+
+.ner {
     color: rgb(7, 222, 93);
 }
 
@@ -624,4 +649,18 @@ form .btn1:focus{
     height: 3px;
     margin-top: 8px;
     transition: transform 0.3s ease-in-out;
+}
+
+.eCart {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.eCart img {
+    width: 20em;
+    height: 20em;
 }

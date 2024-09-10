@@ -95,7 +95,6 @@ const ShopPage = () => {
                 <option>Food & Drink</option>
                 <option>Clothing</option>
                 <option>Vehicles</option>
-                <option>Technology</option>
                 <option>Fitness</option>
                 <option>Wearables</option>
                 <option>Home Appliances</option>

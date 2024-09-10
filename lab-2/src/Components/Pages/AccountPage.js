@@ -4,14 +4,24 @@ import productImage from '../images/image1.png';
 import ClientFooter from '../ClientComps/ClientFooter';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { useLocation } from 'react-router-dom';
 
 const AccountPage = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [formData, setFormData] = useState({ userName: '', userEmail: '', userPassword: '' });
+  const location = useLocation();
   const [error, setError] = useState('');
   const [noError, setnoError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [tokenValid, setTokenValid] = useState(false);
+
+  useEffect(() => {
+    // Check if there's an error message passed from SingleProductPage.js
+    if (location.state?.errorMessage) {
+      setError(location.state.errorMessage);
+      setIsLogin(true)
+    }
+  }, [location]);
 
   useEffect(() => {
     const checkTokenValidity = () => {
