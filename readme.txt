@@ -107,7 +107,7 @@ para se me fillu serverin btw.
 
 // TODO (chronological)
 
-#1 - show all products,
+#1 - show all products, --DONE
 #2 - make view single product
 #3 - make addToCart with user (addToCart -> isLoggedIn = false -> send to AccoutPage)
 #4 - make purchase API
