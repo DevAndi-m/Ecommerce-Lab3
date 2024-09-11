@@ -8,7 +8,7 @@ const productSchema = new mongoose.Schema({
     productQuantity: { type: Number, required: true },
     productPrice: { type: Number, required: true },
     productDateOfListing: { type: Date, default: Date.now },
-    seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     description: {
         type: String,
         validate: [
@@ -16,7 +16,6 @@ const productSchema = new mongoose.Schema({
           `Description cannot contain more than ${maxWords} words.`
         ]
     }
-      
 });
 
 module.exports = mongoose.model('Product', productSchema);

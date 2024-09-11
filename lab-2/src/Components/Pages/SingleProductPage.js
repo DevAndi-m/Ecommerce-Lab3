@@ -122,18 +122,19 @@ function SingleProductPage({ cart, setCart }) {
 
       <div className="small-container1">
         <div className="row1 row1-2">
-          <h2>Related Products</h2>
+          {relatedProducts.length > 0 && (
+            <h2>Related Products</h2>
+          )}
           <a href="/shop">
             <p>Back to shop</p>
           </a>
         </div>
 
-        {/* Display related products */}
-        <div className="row1">
-          {relatedProducts.map(relatedProduct => (
+        {relatedProducts.map((relatedProduct) => (
+          <div className='row1'>
             <SmallProductCard key={relatedProduct._id} product={relatedProduct} />
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
       <ClientFooter />

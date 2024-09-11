@@ -5,6 +5,7 @@ import ClientFooter from '../ClientComps/ClientFooter';
 import SmallProductCard from '../ClientComps/SmallProductCard';
 import ClientIcons from '../ClientComps/ClientIcons';
 import AdminIcons from '../AdminComps/AdminIcons';
+import NoProd from '../images/No_Product_Found.png'
 
 const ShopPage = () => {
     const [products, setProducts] = useState([]);
@@ -46,20 +47,18 @@ const ShopPage = () => {
     };
   
     const filteredProducts = products.filter((product) => {
-      // Filter by category
+
       if (selectedCategory !== 'All' && product.productCategory !== selectedCategory) {
         return false;
       }
   
-      // Filter by search term
       if (searchTerm && !product.productName.toLowerCase().includes(searchTerm.toLowerCase())) {
         return false;
       }
   
-      return true; // Product is included
+      return true; 
     });
   
-    // Sort the filtered products based on the selected option
     const sortedProducts = filteredProducts.sort((a, b) => {
       switch (sortBy) {
         case 'dateListed':
@@ -98,7 +97,6 @@ const ShopPage = () => {
                 <option>Fitness</option>
                 <option>Wearables</option>
                 <option>Home Appliances</option>
-                {/* ... other categories */}
               </select>
             </div>
 
@@ -110,15 +108,18 @@ const ShopPage = () => {
             </select>
           </div>
 
-          <div className="row1">
-            {sortedProducts.map((product) => (
-              <SmallProductCard key={product._id} product={product} />
-            ))}
-          </div>
-
-          <div className='smholder'>
-            <button className='sm'>See More</button>
-          </div>
+          {filteredProducts.length === 0 || filteredProducts.every(product => product.productQuantity <= 0) ? (
+            <div className='noProd'>
+              <img src={NoProd}></img>
+              <p>Post your very own now!</p>
+            </div>
+          ) : (
+            <div className="row1">
+              {filteredProducts.filter(product => product.productQuantity > 0).map((product) => (
+                <SmallProductCard key={product._id} product={product} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <ClientFooter />

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const purchaseController = require('../controllers/purchase.controller');
-const authMiddleware = require('../middleware/authMiddleware'); // Middleware for JWT validation
+const authMiddleware = require('../middleware/authMiddleware'); 
 
 // Check for errors in the middleware
 router.post('/purchase', async (req, res, next) => {
