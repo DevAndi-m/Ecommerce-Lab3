@@ -1,6 +1,9 @@
+require('dotenv').config();
 const User = require('../models/user.model.schema.js');
 const bcrypt = require('bcryptjs'); // For hashing passwords
 const jwt = require('jsonwebtoken');
+
+const secretKey = process.env.SECRET_KEY_LAB2;
 
 // GET all users
 const getUsers = async (req, res) => {
@@ -90,7 +93,7 @@ const registerUser = async (req, res) => {
 
         await newUser.save();
 
-        const token = jwt.sign({ id: newUser._id }, 'secretKey', { expiresIn: '1h' });
+        const token = jwt.sign({ id: newUser._id }, secretKey, { expiresIn: '1h' });
 
         res.status(201).json({ message: 'User registered successfully', token });
 
@@ -114,7 +117,7 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ id: user._id }, 'secretKey', { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '1h' });
 
         res.status(200).json({ message: 'Login successful', token });
 

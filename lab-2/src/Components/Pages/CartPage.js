@@ -2,18 +2,49 @@ import ecart from '../images/empty-cart.png';
 import React from 'react';
 import ClientHeader from '../ClientComps/ClientHeader';
 import ClientFooter from '../ClientComps/ClientFooter';
+import axios from 'axios';
 
 function CartPage({ cart, setCart }) {
 
-  // Calculate subtotal for each item and the total
   const calculateTotal = () => {
-    return cart.reduce((acc, item) => acc + item.productPrice * item.quantity, 0);
+    const total = cart.reduce((acc, item) => acc + item.productPrice * item.quantity, 0);
+    return total.toFixed(2); 
+  };
+  
+  const handleRemove = (productId) => {
+    setCart((prevCart) => {
+      const updatedCart = prevCart.filter((item) => item._id !== productId);
+
+      if (updatedCart.length === prevCart.length) {
+        console.log("Product not found in cart");
+        return prevCart; 
+      }
+      console.log("Product removed, new cart:", updatedCart);
+      return updatedCart;
+    });
   };
 
-  const handleRemove = (productId) => {
-    // Remove the product from the cart
-    setCart(cart.filter(item => item._id !== productId));
-  };
+  const handlePurchase = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        
+        const response = await axios.post('http://localhost:5000/api/purchases/purchase', {
+            cart
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}` // Include the token in the header
+            }
+        });
+        if (response.status === 200) {
+            setCart([]);
+            alert('Purchase successful!');
+        }
+    } catch (error) {
+        console.error('Purchase failed:', error.response ? error.response.data : error.message);
+        alert(`Error: ${error.response ? error.response.data.message : error.message}`);
+    }
+};
+
 
   return (
     <>
@@ -21,8 +52,7 @@ function CartPage({ cart, setCart }) {
         <ClientHeader />
       </div>
 
-      {/* Check if cart is empty */}
-      {cart.length === 0 ? (
+      {cart && cart.length === 0 ? (
         <div className='eCart'>
           <img src={ecart} alt="Empty Cart" />
           <h1>Your cart seems to be empty</h1>
@@ -39,7 +69,7 @@ function CartPage({ cart, setCart }) {
               </tr>
             </thead>
             <tbody>
-              {cart.map((item) => (
+              {cart.map((item, index) => (
                 <tr key={item._id}>
                   <td>
                     <div className="cart-info1">
@@ -47,7 +77,7 @@ function CartPage({ cart, setCart }) {
                       <div>
                         <p>{item.productName}</p>
                         <small>Price: ${item.productPrice}</small><br />
-                        <a href="/" onClick={() => handleRemove(item._id)}>Remove</a>
+                        <button className='remvbtn' onClick={() => handleRemove(item._id)}>Remove</button>
                       </div>
                     </div>
                   </td>
@@ -68,9 +98,11 @@ function CartPage({ cart, setCart }) {
               </tbody>
             </table>
           </div>
+          <div className='buyBtn'>
+            <button onClick={handlePurchase}>Proceed with Purchase</button>
+          </div>
         </div>
       )}
-      
       <ClientFooter />
     </>
   );

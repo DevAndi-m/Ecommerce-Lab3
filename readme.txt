@@ -109,9 +109,9 @@ para se me fillu serverin btw.
 
 #1 - show all products, --DONE
 #2 - make view single product --DONE
-#3 - Show added to cart products of user. (not saved if logged off)
-#4 - make addToCart with user (addToCart -> isLoggedIn = false -> send to AccoutPage)
-#5 - make purchase API 
+#3 - Show added to cart products of user. (not saved if logged off) --DONE
+#4 - make addToCart with user (addToCart -> isLoggedIn = false -> send to AccoutPage) --DONE
+#5 - make purchase API --DONE
 #6 - Show purchase history of user (purchasedProudcts)
 #7 - Make CreateListing/MyProductsForSale (CRUD)
 

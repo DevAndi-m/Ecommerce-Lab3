@@ -364,12 +364,50 @@ ul{
     color: rgb(7, 222, 93);
 }
 
+.remvbtn {
+    padding: 2px 15px;
+    background-color: rgb(191, 43, 43);
+    border: none;
+    border-radius: 3px;
+    color: white;
+}
+
+.remvbtn:hover {
+    cursor: pointer;
+    background-color: rgb(135, 30, 30);
+}
+
 .tkn {
     position: absolute;
     bottom: 5px;
     left: 10px;
     color: #818181;
     font-weight: bold;
+}
+
+.buyBtn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2em;
+    
+}
+
+.buyBtn button {
+    font-size: 20px;
+    padding: 10px 40px;
+    background-color: #ff523b;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    transition: all 0.2s;
+}
+
+.buyBtn button:hover {
+    cursor: pointer;
+    transform: scale(1.04);
+    background-color: #ba3726;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
 /*-----------------------media query for menu -----------------------*/

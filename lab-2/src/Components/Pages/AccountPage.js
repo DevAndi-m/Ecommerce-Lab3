@@ -26,6 +26,7 @@ const AccountPage = () => {
   useEffect(() => {
     const checkTokenValidity = () => {
       const token = localStorage.getItem('token');
+      
       if (token) {
         const decodedToken = jwtDecode(token);
         const isTokenValid = decodedToken.exp * 1000 > Date.now(); // Check if token is expired
@@ -58,9 +59,7 @@ const AccountPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
     const url = isLogin ? 'http://localhost:5000/api/users/login' : 'http://localhost:5000/api/users/register';
-
     try {
       const response = await axios.post(url, formData, {
         headers: {
