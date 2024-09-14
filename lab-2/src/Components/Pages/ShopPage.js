@@ -3,8 +3,6 @@ import '../css/Client.css';
 import ClientHeader from '../ClientComps/ClientHeader';
 import ClientFooter from '../ClientComps/ClientFooter';
 import SmallProductCard from '../ClientComps/SmallProductCard';
-import ClientIcons from '../ClientComps/ClientIcons';
-import AdminIcons from '../AdminComps/AdminIcons';
 import NoProd from '../images/No_Product_Found.png'
 
 const ShopPage = () => {

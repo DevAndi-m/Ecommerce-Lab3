@@ -576,10 +576,310 @@ input:focus{
     cursor: pointer;
 }
 
+/* ---------------------------------ACCOUNT INFO--------------------------------- */
 
+.container2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1300px;
+    margin: auto;
+}
 
+.accountBtns2 {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
 
-        /*------------------------------ cart items ------------------------------*/
+.accountBtns2 button {
+    padding: 10px 30px;
+    background: transparent;
+    border: 2px solid #ff523b;
+    color: #ff523b;
+    font-weight: bold;
+    border-radius: 12px;
+
+    transition: all 0.1s;
+}
+
+.accountBtns2 button:hover {
+    cursor: pointer;
+    background-color: #ff523b;
+    color: white;
+}
+
+button.current {
+    background-color: #ff523b;
+    color: white;
+}
+
+.info2 {
+    margin: 5em 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.mainInfo2 {
+    border: 1px solid #ff523b;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.profile-picture2 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cbtn {
+    display: flex;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 5px 30px;
+    background-color: #ff523b;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 12px;
+}
+
+.cbtn:hover {
+    cursor: pointer;
+    background-color: transparent;
+    color: #ff523b;
+    border: 1px solid #ff523b;
+}
+
+.profile-picture2 img{
+    height: 15em;
+    width: 15em;
+    border: 1px solid #ff523b;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form div {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.secInfo2 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 30em;
+}
+
+.secInfo2 label {
+    border: 1px solid #ff523b;
+    padding: 10px;
+}
+
+.createListingMP {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.createListingMP h1 {
+    margin: auto;
+    margin-top: 1em;
+    color: #ff523b;
+}
+
+.addProductBtn {
+    flex-basis: 25%;
+    padding: 10px;
+    min-width: 200px;
+    background-color: transparent;
+    border: 3px solid #ff523b;
+    border-radius: 12px;
+    transition: 0.5s;
+    cursor: pointer;
+    color: #ff523b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+}
+
+.addProductBtn:hover {
+    background-color: #ff523b;
+    color: white;
+}
+
+.productReel {
+    display: flex;
+    justify-content: center;
+    margin: 2em auto;
+    width: 90%;
+    gap: 10px;
+    overflow-x: scroll;
+}
+
+.pWorkHolder {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    z-index: 2;
+}
+
+.postWorkPanel {
+    border-radius: 20px;
+    padding: 2em;
+    width: 50%;
+    height: 80vh;
+    margin: 5em auto;
+  
+    background-color: white;;
+}
+
+.postPanel {
+    position: absolute;
+    width: 100%;
+    height: 155vh;
+    background-color: black;
+    opacity: 0.8;
+    top: 0;
+    
+}
+
+.postImage {
+    width: 30%;
+}
+
+.postImage img {
+    width: 100%;
+    border: 1px solid #ff523b;
+}
+
+.postRow1 {
+    display: flex;
+    gap: 20px;
+}
+
+.postMainInputs {
+    width: 70%;
+    font-size: 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.pmInput {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+.pmInput input {
+    width: 50%;
+    border: 1px solid #ff523b;
+    padding: 3px 10px;
+}
+
+.pmInput input:focus {
+    border: 2px solid #ff523b;
+}
+
+.postRow2 {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+}
+
+textarea {
+    resize: none;
+    border: 1px solid #ff523b;
+}
+
+.postRow3 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 1.8em;
+}
+
+.go-back {
+    position: absolute;
+    left: 27vw;
+    bottom: 14vh;
+
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+}
+
+.go-back:hover {
+    cursor: pointer;
+}
+
+.createLisBtn {
+    padding: 10px 40px;
+    border: 2px solid #ff523b;
+    background-color: #ff523b;
+    color: white;
+    border-radius: 12px;
+    transition: all 0.3s;
+    
+}
+
+.createLisBtn:hover {
+    cursor: pointer;
+    background-color: transparent;
+    color: #ff523b;
+    font-weight: bold;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+}
+
+.ppHolder {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 90%;
+    margin: 2em auto;
+}
+
+.ppbox {
+    display: flex;
+    gap: 10px;
+    border: 1px solid #ff523b;
+    border-radius: 20px;
+    padding: 13px;
+}
+
+.ppImg {
+    width: 15%;
+    
+  }
+  
+.ppImg img {
+    width: 100%;
+    border-radius: 12px;
+    
+}
+
+.ppInfoHolder {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 85%;
+}
+
+.ppInfoHolder p {
+    font-size: 25px;
+}
+
+/*------------------------------ cart items ------------------------------*/
 .cart-page1{
     margin: 80px auto;
 }
