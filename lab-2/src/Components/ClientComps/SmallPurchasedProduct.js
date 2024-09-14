@@ -1,5 +1,5 @@
 import React from 'react';
-import productImg from '../images/product-4.jpg'; // Assuming this is a placeholder
+import productImg from '../images/product-4.jpg'; // Placeholder image
 
 function SmallPurchasedProduct({ product, seller, datePurchased, quantityPurchased, pricePerProduct }) {
   return (
@@ -9,7 +9,7 @@ function SmallPurchasedProduct({ product, seller, datePurchased, quantityPurchas
       </div>
       <div className='ppInfoHolder'>
         <p>Name: {product.productName}</p>
-        <p>Seller: {seller.name}</p>
+        <p>Seller: {seller.userName}</p>
         <p>Date Purchased: {new Date(datePurchased).toLocaleDateString()}</p>
         <p>Quantity Purchased: {quantityPurchased}</p>
         <p>Price per product: ${pricePerProduct.toFixed(2)}</p>
@@ -20,3 +20,4 @@ function SmallPurchasedProduct({ product, seller, datePurchased, quantityPurchas
 }
 
 export default SmallPurchasedProduct;
+

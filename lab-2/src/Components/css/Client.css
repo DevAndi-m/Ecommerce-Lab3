@@ -167,6 +167,7 @@ p{
     margin: auto;
     padding-left: 25px;
     padding-right: 25px;   
+    
 }
 .col1-4{
     flex-basis: 25%;
@@ -202,6 +203,29 @@ p{
     left: 50%;
     transform: translateX(-50%);
 }
+
+.psu {
+    padding: 10px 20px;
+    background-color: lightgreen;
+    width: fit-content;
+    border-radius: 12px;
+    color: white;
+    margin-top: 20px;
+}
+
+.pds {
+    padding: 10px 20px;
+    background-color: lightcoral;
+    width: fit-content;
+    border-radius: 12px;
+    color: white;
+    margin-top: 20px;
+}
+
+.message-container {
+    margin: 0 auto;
+}
+
 h4{
     color: #555;
     font-weight: normal;
@@ -1014,4 +1038,15 @@ form .btn1:focus{
 .eCart img {
     width: 20em;
     height: 20em;
+}
+
+.col1-21 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+}
+
+.col1-21 input {
+    width: 80%;
 }

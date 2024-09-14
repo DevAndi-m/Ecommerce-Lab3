@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ClientHeader from '../ClientComps/ClientHeader';
 import ClientFooter from '../ClientComps/ClientFooter';
-import product11 from '../images/product-11.jpg';
-import product5 from '../images/product-5.jpg';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import SmallProductCard from '../ClientComps/SmallProductCard';
 import { jwtDecode } from 'jwt-decode';
+import ProductShowcase from '../ClientComps/ProductShowcase';
+import MyProductShowcase from '../ClientComps/MyProductShowcase';
 
 function SingleProductPage({ cart, setCart }) {
   const { productId } = useParams(); 
@@ -15,16 +15,20 @@ function SingleProductPage({ cart, setCart }) {
   const [productSeller, setProductSeller] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isSeller, setIsSeller] = useState(false); // New state to track if the logged-in user is the seller
 
   const [er, setEr] = useState();
   const [ner, setNer] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    let decodedToken = null;
+
     if (token) {
-      const decodedToken = jwtDecode(token);
+      decodedToken = jwtDecode(token);
       setIsLoggedIn(decodedToken.exp * 1000 > Date.now());
     }
+
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/products/${productId}`);
@@ -32,6 +36,11 @@ function SingleProductPage({ cart, setCart }) {
 
         const userResponse = await axios.get(`http://localhost:5000/api/users/${response.data.seller}`);
         setProductSeller(userResponse.data);
+
+        // Check if the logged-in user is the seller
+        if (token && decodedToken && decodedToken.id === response.data.seller) {
+          setIsSeller(true);
+        }
 
         // After fetching the product, fetch related products
         const productsResponse = await axios.get('http://localhost:5000/api/products');
@@ -81,46 +90,25 @@ function SingleProductPage({ cart, setCart }) {
         <ClientHeader />
       </div>
 
-      <div className="small-container1 single-product1">
-        <div className="row1">
-          <div className="col1-2">
-            <img src={product11} alt="Product" width="100%" id="productImg1" />
+      {isSeller ? (
+        <MyProductShowcase
+          product={product} // Pass the product data
+          productSeller={productSeller} // Pass the seller data
+          handleAddToCart={handleAddToCart} // Function to handle adding to cart
+          er={er} // Error message if any
+          ner={ner} // Success message if any
+        />
+      ) : (
+        <ProductShowcase
+          product={product} // Pass the product data
+          productSeller={productSeller} // Pass the seller data
+          handleAddToCart={handleAddToCart} // Function to handle adding to cart
+          er={er} // Error message if any
+          ner={ner} // Success message if any
+        />
+      )}
 
-            <div className="small-img-row1">
-              <div className="small-img-col1">
-                <img src={product11} alt="Small Product" width="100%" className="small-img1" />
-              </div>
-              <div className="small-img-col1">
-                <img src={product5} alt="Small Product" width="100%" className="small-img1" />
-              </div>
-              <div className="small-img-col1">
-                <img src={product11} alt="Small Product" width="100%" className="small-img1" />
-              </div>
-              <div className="small-img-col1">
-                <img src={product5} alt="Small Product" width="100%" className="small-img1" />
-              </div>
-            </div>
-          </div>
-
-          <div className="col1-2">
-            <h1>{product.productName}</h1>
-            <h4>${product.productPrice}</h4>
-            <p>{product.productCategory}</p>
-            <input type="number" id="quantityInput" defaultValue="1" /> <label>{product.productQuantity} left</label>
-            <button onClick={() => handleAddToCart(product)} className="btn12">Add to Cart</button>
-            <div className="message-container">
-              {er && <label className="er">{er}</label>}
-              {ner && <label className="ner">{ner}</label>}
-            </div>
-            <h3>Product Details <i className="fa fa-indent"></i></h3>
-            <p>Published by {productSeller?.userName} - {new Date(product.productDateOfListing).toLocaleDateString()}</p>
-            <br />
-            <p>{product.description}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="small-container1">
+      <div className="container1">
         <div className="row1 row1-2">
           {relatedProducts.length > 0 && (
             <h2>Related Products</h2>
@@ -130,11 +118,13 @@ function SingleProductPage({ cart, setCart }) {
           </a>
         </div>
 
-        {relatedProducts.map((relatedProduct) => (
-          <div className='row1'>
-            <SmallProductCard key={relatedProduct._id} product={relatedProduct} />
-          </div>
-        ))}
+        <div className='small-container1'>
+          {relatedProducts.map((relatedProduct) => (
+            <div className='row1' key={relatedProduct._id}>
+              <SmallProductCard product={relatedProduct} />
+            </div>
+          ))}
+        </div>
       </div>
 
       <ClientFooter />
