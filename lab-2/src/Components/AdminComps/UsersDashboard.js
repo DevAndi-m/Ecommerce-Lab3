@@ -36,7 +36,7 @@ function UsersDashboard() {
     phone: '',
     password: '',
     isAdmin: false,
-    selectedFile: "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+    selectedFile: null
   });  
 
   const [formInputs, setFormInputs] = useState({
@@ -45,6 +45,7 @@ function UsersDashboard() {
     userPhoneNum: '',
     userPassword: '',
     userIsAdmin: false,
+    userProfile: null
   });
 
   const [nameError, setNameError] = useState('');
@@ -132,6 +133,7 @@ function UsersDashboard() {
         userPhoneNum: userData.userPhoneNum,
         userPassword: userData.userPassword,
         userIsAdmin: userData.userIsAdmin,
+        userProfile: userData.userProfile
       });
 
       handleRefresh();
@@ -141,27 +143,44 @@ function UsersDashboard() {
   };
 
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    const newValue = type === 'checkbox' ? checked : value;
-    setFormInputs(prevState => ({ ...prevState, [name]: newValue }));
-
+    const { name, value, type, checked, files } = e.target;
+    
+    if (type === 'file') {
+      // Handle file input change
+      const file = files[0];
+      if (file) {
+        setNewUser(prevState => ({
+          ...prevState,
+          selectedFile: file, // Store the file object
+        }));
+      }
+    } else {
+      // Handle text input change
+      const newValue = type === 'checkbox' ? checked : value;
+      setFormInputs(prevState => ({ ...prevState, [name]: newValue }));
+    }
+  
+    // Clear errors
     setNameError('');
     setEmailError('');
     setPhoneError('');
+    setPhotoError('');
   };
+  
   
   const handleUpdateUser = async (e) => {
     e.preventDefault();
   
     let isValid = true;
-  
+
+    // Validate the user inputs
     if (formInputs.userName.trim() === '') {
       setNameError('Name cannot be empty.');
       isValid = false;
     } else {
       setNameError('');
     }
-  
+
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formInputs.userEmail.trim() === '' || !emailPattern.test(formInputs.userEmail)) {
       setEmailError('Please enter a valid email address.');
@@ -169,7 +188,7 @@ function UsersDashboard() {
     } else {
       setEmailError('');
     }
-  
+
     const phonePattern = /^\d{10}$/;
     if (formInputs.userPhoneNum.trim() === '' || !phonePattern.test(formInputs.userPhoneNum)) {
       setPhoneError('Please enter a valid phone number.');
@@ -177,43 +196,73 @@ function UsersDashboard() {
     } else {
       setPhoneError('');
     }
-  
-    const imageExtensions = /\.(jpeg|jpg|png|gif)$/i;
-    if (!imageExtensions.test(newUser.selectedFile)) {
-      setPhotoError('Please enter a valid image URL (JPEG, JPG, PNG, GIF).');
-      isValid = false;
-    } else {
-      setPhotoError('');
+
+    // Validate the selected file
+    if (newUser.selectedFile) { // Only validate if a file is selected
+      const imageExtensions = /\.(jpeg|jpg|png|gif)$/i;
+      if (!imageExtensions.test(newUser.selectedFile.name)) { // Check the file name
+        setPhotoError('Please enter a valid image URL (JPEG, JPG, PNG, GIF).');
+        isValid = false;
+      } else {
+        setPhotoError('');
+      }
     }
-  
+
     if (isValid) {
       try {
+        let updatedUserData = { ...formInputs }; // Prepare user data for update
+
+        // If a new image is selected, upload it to Cloudinary
+        if (newUser.selectedFile) {
+          const preset_key = 'ecommerce_images';
+          const cloud_name = 'diw1dnseq';
+  
+          const formData = new FormData();
+          formData.append('file', newUser.selectedFile);
+          formData.append('upload_preset', preset_key);
+  
+          // Upload image to Cloudinary
+          const cloudinaryResponse = await fetch(
+            `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+            {
+              method: 'POST',
+              body: formData
+            }
+          );
+          
+          const imageData = await cloudinaryResponse.json();
+          updatedUserData.userProfile = imageData.secure_url; // Assign the Cloudinary URL
+        }
+
+        // Send the updated user data to the server
         const response = await fetch(`http://localhost:5000/api/users/${editingUser._id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formInputs),
+          method: 'PUT',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedUserData), // Use updatedUserData here
         });
 
         if (response.ok) {
           alert('User has been edited');
+          setEditingUser(null);
+          handleRefresh();
         } else {
             const data = await response.json();
             console.error('Error updating user:', data.message);
 
             if (response.status === 400) {
-                alert('User has not beed editedCheck inputs');
+                alert('User has not been edited. Check inputs.');
             } else {
                 alert(data.message);
             }
         }
-    } catch (error) {
+      } catch (error) {
         console.error('An error occurred:', error);
         alert('An error occurred: ' + error.message); 
+      }
     }
-    }
-  };
+};
    
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -236,11 +285,6 @@ function UsersDashboard() {
       selectedFile: null 
     });
   };
-
-  const handleCreate = () => {
-    selectedPage(1);
-    handleRefresh();
-  }
 
   const checkUsernameAvailability = (username) => {
    setTimeout(() => {
@@ -307,46 +351,86 @@ function UsersDashboard() {
     checkPhoneNumberAvailability(newUser.phone)
   }, [newUser.name, newUser.email, newUser.phone]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]; // Get the selected file
+    if (file) {
+      setNewUser(prevState => ({
+        ...prevState,
+        selectedFile: file // Set the selected file as an object
+      }));
+    }
+  };
+  
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const preset_key = 'ecommerce_images'; // Make sure this preset is valid
+  const cloud_name = 'diw1dnseq';
+
+  // Check if the file is selected
+  if (!newUser.selectedFile) {
+    console.error('No file selected for upload');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', newUser.selectedFile); // Ensure the file is valid
+  formData.append('upload_preset', preset_key); // Ensure preset is correct
+
+  try {
+    // Upload image to Cloudinary
+    const cloudinaryResponse = await fetch(
+      `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    );
+    
+    const imageData = await cloudinaryResponse.json();
+
+    if (imageData.error) {
+      throw new Error(imageData.error.message); // Handle Cloudinary error
+    }
+
+    // Create user with image URL from Cloudinary
     const userData = {
       userName: newUser.name,
       userEmail: newUser.email,
       userPhoneNum: newUser.phone,
       userPassword: newUser.password,
       userIsAdmin: newUser.isAdmin,
-      userProfile: newUser.selectedFile,
+      userProfile: imageData.secure_url, // Use the Cloudinary URL
     };
-  
-    try {
-      const response = await fetch('http://localhost:5000/api/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
-  
-      if (response.ok) {
-        console.log('User created!');
-        setNewUser({
-          name: '',
-          email: '',
-          phone: '',
-          password: '',
-          isAdmin: false,
-          selectedFile: null,
-        });
 
-        handleCreate();
-        
-      } else {
-        console.error('Error creating user:', response.statusText);
-      }
-    } catch (error) {
-      console.error('An error occurred:', error);
+    const response = await fetch('http://localhost:5000/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (response.ok) {
+      console.log('User created successfully!');
+      handleRefresh();
+      setNewUser({
+        name: '',
+        email: '',
+        phone: '',
+        password: '',
+        isAdmin: false,
+        selectedFile: null,
+      });
+    } else {
+      console.error('Error creating user:', response.statusText);
     }
-  };
+  } catch (error) {
+    console.error('An error occurred:', error.message);
+  }
+};
+
+  
   
   const handleDeleteUser = async (e) => {
     e.preventDefault();
@@ -465,7 +549,7 @@ function UsersDashboard() {
       <React.Fragment>
         <div className='rightMainUserInfo'>
           <div className='rightUserImage'>
-            <img src={editingUser.userProfile} className='rightPLCIMG' alt='Profile'></img>
+            <img src={formInputs.userProfile} className='rightPLCIMG' alt='Profile'></img>
           </div>
           <div className='rightUserTitle'>
             <div className='inpt'>
@@ -483,9 +567,11 @@ function UsersDashboard() {
               <input type='tel' value={formInputs.userPhoneNum} onChange={handleInputChange} name='userPhoneNum' />
             </div>
             {phoneError && <p className="errorMessage">{phoneError}</p>}
-            <div className='inpt'>
-              <label>Img URL: </label>
-              <input type='url' value={formInputs.userProfile} onChange={handleInputChange} name='userProfile' />
+            <div className='inpt file'>
+            <label class="custom-file-upload-edit">
+                <input type="file" onChange={handleInputChange}/>
+                Upload New Image Here
+            </label>
             </div>
             {photoError && <p className="errorMessage">{photoError}</p>}
           </div>
@@ -537,7 +623,7 @@ function UsersDashboard() {
         <div className='cuTitle'>
           <h1>Create User</h1>
         </div>
-        <form className='createUserForm' onSubmit={handleSubmit}>
+        <form className="createUserForm" onSubmit={handleSubmit} enctype="multipart/form-data">
           <div className='createUserLeft'>
             <div className='cuInputs'>
               <div className='cInput'>
@@ -569,14 +655,15 @@ function UsersDashboard() {
           </div>
           <div className='createUserRight'>
           <div className='inputPic'>
-            {newUser.selectedFile && <img src={newUser.selectedFile} alt='Profile'></img>}
+            {newUser.selectedFile && (
+              <img src={URL.createObjectURL(newUser.selectedFile)} alt='Profile' />
+            )}
           </div>
             <div className='profileFind'>
-                <h3>Paste image URL:</h3>
-                <div className='profileInputPic'>
-                  <input type='url' className='profileUrl' onPaste={handleImagePaste}></input>
-                </div>
-                {invalidImageUrl && <p className="createError">Please paste a valid image URL (JPEG, JPG, PNG, GIF).</p>}
+            <label class="custom-file-upload">
+                <input type="file" onChange={handleFileChange}/>
+                Upload Image Here
+            </label>
             </div>
             <div className='createUserButtons'>
               <button type='submit' className='createNewUser'>Create User</button>

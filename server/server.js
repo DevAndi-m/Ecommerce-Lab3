@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); // Import cors package
+const cloudinary = require('cloudinary').v2;
 const userRoutes = require('./routes/user.route');
 const productRoutes = require('./routes/product.route');
 const purchasedProductRoutes = require('./routes/purchasedProduct.route');
@@ -18,6 +19,12 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
 }));
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 // ROUTES
 app.use('/api/users', userRoutes);

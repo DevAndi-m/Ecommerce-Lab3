@@ -13,6 +13,9 @@ function AccountInfo({ userData, userProducts, purchasedProducts }) {
     purchasedProducts: []
   });
 
+  // Store the new profile picture file
+  const [selectedFile, setSelectedFile] = useState(null);
+
   // Fetch user data when the component mounts
   useEffect(() => {
     if (userData) {
@@ -37,24 +40,42 @@ function AccountInfo({ userData, userProducts, purchasedProducts }) {
   // Handle profile picture change
   const handleProfilePictureChange = (e) => {
     if (e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]); // Save the file for uploading
       setUserInfo({ ...userInfo, userProfile: URL.createObjectURL(e.target.files[0]) });
     }
   };
 
   // Submit the updated user data via a PUT request
   const handleSubmitChanges = async () => {
+
+    const preset_key = 'ecommerce_images'; // Make sure this preset is valid
+    const cloud_name = 'diw1dnseq';
+
     try {
       const token = localStorage.getItem('token');
       const headers = { 'Authorization': `Bearer ${token}` };
 
+      // If a new profile picture was selected, upload it to Cloudinary
+      let profileImageUrl = userInfo.userProfile; // Default to current profile picture
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('upload_preset', `${preset_key}`); // Replace with your Cloudinary upload preset
+
+        const cloudinaryResponse = await axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData);
+        profileImageUrl = cloudinaryResponse.data.secure_url; // Get the secure URL for the uploaded image
+      }
+
       const response = await axios.put(`http://localhost:5000/api/users/${userData._id}`, {
         userName: userInfo.userName,
         userEmail: userInfo.userEmail,
-        userPhoneNum: userInfo.userPhoneNum
+        userPhoneNum: userInfo.userPhoneNum,
+        userProfile: profileImageUrl // Include the updated profile image URL
       }, { headers });
 
       console.log('User updated:', response.data);
       // Optionally show a success message here
+
     } catch (error) {
       console.error('Error updating user:', error);
       // Optionally show an error message here

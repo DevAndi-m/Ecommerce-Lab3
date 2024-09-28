@@ -5,7 +5,7 @@ import AccountHistory from './AccountHistory';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-function ClientAccountLogged() {
+function ClientAccountLogged({ setIsLoggedIn }) {
   const [activePage, setActivePage] = useState('info');
   const [userData, setUserData] = useState(null);
   const [userProducts, setUserProducts] = useState([]);
@@ -15,9 +15,9 @@ function ClientAccountLogged() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token'); // Ensure this matches the key used for logout
         if (!token) return;
-        
+
         const decodedToken = jwtDecode(token);
         const userId = decodedToken.id;  // Use `id` from token
         
@@ -52,6 +52,17 @@ function ClientAccountLogged() {
     setActivePage(page);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');  // Ensure the key matches
+    localStorage.removeItem('userData'); 
+    // Clear cookies
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, `=;expires=${new Date().toUTCString()};path=/`);
+    });
+    setIsLoggedIn(false); // Update the logged-in state in parent component
+    window.location.reload(); // Refresh the page
+  };
+
   return (
     <>
       <div className='container2'>
@@ -73,6 +84,10 @@ function ClientAccountLogged() {
             onClick={() => handleButtonClick('history')}
           >
             Purchase History
+          </button>
+
+          <button onClick={handleLogout}>
+            Log out
           </button>
         </div>
       </div>

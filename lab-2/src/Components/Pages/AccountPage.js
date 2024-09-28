@@ -96,7 +96,9 @@ const AccountPage = () => {
           error={error}
         />
       ) : (
-        <ClientAccountLogged />
+        <ClientAccountLogged 
+          setIsLoggedIn={setIsLoggedIn}
+        />
       )}
 
       <ClientFooter />
