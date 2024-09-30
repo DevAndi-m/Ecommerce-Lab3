@@ -11,8 +11,10 @@ const app = express();
 const port = 5000;
 
 //POSTGRESS
-
 const postgresRoute = require('./routes/Postgress.route');
+
+//STRIPE
+const stripeRoute = require('./routes/stripe.route');
 
 // MIDDLEWARE
 app.use(express.json());
@@ -38,7 +40,10 @@ app.use('/api/purchases', purchaseRoutes);
 
 //ROUTES FOR POSTGRES
 
-app.use('/', postgresRoute)
+app.use('/', postgresRoute);
+
+//ROUTE FOR STRIPE
+app.use('/', stripeRoute);
 
 // Connect to MongoDB and start the server
 mongoose.connect("mongodb+srv://andiyt72:3HFpHG4SnaXYyLZQ@lab2test.tlxmt3t.mongodb.net/lab2test?retryWrites=true&w=majority&appName=lab2test")

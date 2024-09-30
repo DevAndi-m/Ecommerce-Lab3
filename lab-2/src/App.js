@@ -9,6 +9,13 @@ import AdminPage from '../src/Components/Pages/AdminPage';
 import NoPage from './Components/Pages/NoPage';
 import CartPage from './Components/Pages/CartPage';
 
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import CheckoutForm from './Components/Pages/CheckoutForm';
+import SuccessPage from './Components/Pages/SuccessPage';
+
+const stripePromise = loadStripe('pk_test_51Q4mSuEefMIHC4w97hWNIlLWrx6IIZXLEe4CnelmMgP2vxSZSaedbtS82KeTVT8yMNOu4J9WwmrMiZu8sF1vjTwX00t047wz7r');
+
 function App() {
 
   const [cart, setCart] = useState([]);
@@ -25,8 +32,14 @@ function App() {
           <Route path='/admin' element={<AdminPage />} />
           <Route path='/myCart' element={<CartPage cart={cart} setCart={setCart} />} />
           <Route path='*' element={<NoPage />} />
+          <Route path='/successPage' element={<SuccessPage setCart={setCart} />} />
         </Routes>
       </BrowserRouter>
+
+      <Elements stripe={stripePromise}>
+        <CheckoutForm cart={cart} />
+      </Elements>
+
     </div>
   );
 }

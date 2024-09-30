@@ -77,6 +77,19 @@ router.put('/api/cart/merge', async (req, res) => {
     }
 });
 
+router.put('/api/cart/update-quantity', async (req, res) => {
+    const { userId, productId, newQuantity } = req.body;
   
+    try {
+      const client = await pool.connect();
+      const result = await client.query('UPDATE user_carts SET quantity = $1 WHERE user_id = $2 AND product_id = $3', [newQuantity, userId, productId]);
+      client.release();
+  
+      res.status(200).send('Quantity updated');
+    } catch (error) {
+      console.error('Error updating quantity:', error);
+      res.status(500).send('Failed to update quantity');
+    }
+  });  
 
 module.exports = router;
