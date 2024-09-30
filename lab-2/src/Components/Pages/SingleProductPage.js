@@ -55,30 +55,43 @@ function SingleProductPage({ cart, setCart }) {
     fetchProduct();
   }, [productId]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async (product) => {
     if (!isLoggedIn) {
-      navigate('/account', { state: { message: 'You have to be logged in to add something to cart' } });
-      return;
-    } else {
-      const quantityInput = document.getElementById('quantityInput');
-      const quantity = parseInt(quantityInput.value);
-  
-      if (quantity > 0 && quantity <= product.productQuantity) {
-        setCart((prevCart) => [...prevCart, { ...product, quantity: quantity }]);
-        setEr(null); // Clear the error message
-        setNer('Added to cart!'); // Show the success message
-        console.log(cart);
-      } else {
-        if (quantity > product.productQuantity) {
-          setEr('Quantity exceeds available stock'); // Set the error message
-          setNer(null); // Clear the success message
-        } else {
-          setEr('Invalid quantity'); // Set the error message
-          setNer(null); // Clear the success message
-        }
-      }
+        navigate('/account', { state: { message: 'You have to be logged in to add something to cart' } });
+        return;
     }
-  };
+
+    const quantityInput = document.getElementById('quantityInput');
+    const quantity = parseInt(quantityInput.value);
+
+    if (quantity > 0 && quantity <= product.productQuantity) {
+        const token = localStorage.getItem('token');
+        const decodedToken = jwtDecode(token);
+        const userId = decodedToken.id;
+
+        try {
+            // Use the PUT API to merge quantities in the cart
+            await axios.put('http://localhost:5000/api/cart/merge', {
+                userId: userId,
+                productId: product._id,
+                quantity: quantity
+            });
+
+            setEr(null); // Clear the error message
+            setNer('Added to cart!'); // Show the success message
+
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+            setEr('Failed to add to cart');
+        }
+    } else {
+        if (quantity > product.productQuantity) {
+            setEr('Quantity exceeds available stock');
+        } else {
+            setEr('Invalid quantity');
+        }
+    }
+};
 
   if (!product) {
     return <div>Loading...</div>;

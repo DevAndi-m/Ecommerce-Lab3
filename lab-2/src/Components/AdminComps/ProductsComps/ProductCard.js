@@ -46,7 +46,7 @@ function ProductCard({ product, setProducts, onRefresh }) {
           </div>
         </div>
         <div className='rowOneRight'>
-          <img src={plc} alt="Product" />
+          <img src={product.productImage} alt="Product" />
         </div>
       </div>
       <div className='rowTwo'>

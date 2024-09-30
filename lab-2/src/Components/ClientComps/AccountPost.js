@@ -22,18 +22,18 @@ function AccountPost({ userProducts } ) {
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
   const [image, setImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null)
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result); // Store the image as a base64 string
+        setImage(reader.result); // Preview the image as a base64 string
       };
-      reader.readAsDataURL(file); // Convert image to base64 format
+      setSelectedFile(file); // Store the actual file for uploading to Cloudinary
     }
   };
-
   // State to toggle the visibility of postPanel and pWorkHolder
   const [isPanelVisible, setIsPanelVisible] = useState(false);
 
@@ -50,21 +50,44 @@ function AccountPost({ userProducts } ) {
     const token = getToken();
     const userId = getUserIdFromToken();
 
+    const preset_key = 'ecommerce_images'; // Make sure this preset is valid
+    const cloud_name = 'diw1dnseq';
+  
     if (!token || !userId) {
       console.error('Token or user ID is missing');
       return;
     }
+  
+    let productImageUrl = image || null; // Default to base64 or existing image if any
 
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('upload_preset', preset_key); // Replace with your Cloudinary upload preset
+  
+      try {
+        const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+          method: 'POST',
+          body: formData
+        });
+        const cloudinaryData = await cloudinaryResponse.json();
+        productImageUrl = cloudinaryData.secure_url; // Get the secure URL for the uploaded image
+      } catch (error) {
+        console.error('Error uploading image to Cloudinary:', error);
+        return;
+      }
+    }
+  
     const productData = {
       productName,
       productCategory: category,
-      productQuantity: quantity,  // Send as string if that's how it's required
-      productPrice: price,        // Send as string if that's how it's required
+      productQuantity: quantity, // Send as string if that's how it's required
+      productPrice: price,       // Send as string if that's how it's required
       seller: userId,
       description,
-      image: image || null
+      productImage: productImageUrl // Use the Cloudinary image URL or base64 image
     };
-
+  
     try {
       const response = await fetch('http://localhost:5000/api/products', {
         method: 'POST',
@@ -74,13 +97,13 @@ function AccountPost({ userProducts } ) {
         },
         body: JSON.stringify(productData),
       });
-
+  
       if (!response.ok) {
         const errorDetails = await response.json();
         console.error('Server error:', errorDetails);
         throw new Error('Error creating product');
       }
-
+  
       const data = await response.json();
       console.log('Product created:', data);
     } catch (error) {
@@ -165,7 +188,6 @@ function AccountPost({ userProducts } ) {
       </div>
       )}
 
-      {/* Conditionally render the postPanel based on isPanelVisible */}
       {isPanelVisible && <div className='postPanel'></div>}
 
       <h1>Currently being listed by you:</h1>

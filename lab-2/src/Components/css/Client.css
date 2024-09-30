@@ -169,16 +169,22 @@ p{
     padding-right: 25px;   
     
 }
-.col1-4{
+.col1-4 {
     flex-basis: 25%;
+    overflow: hidden;
     padding: 10px;
     min-width: 200px;
     margin-bottom: 50px;
     transition: transform 0.5s;
     cursor: pointer;
+    height: 75vh;
 }
-.col1-4 img{
-    width:100%;
+
+.col1-4 img {
+    width: 100%;
+    height: 70%;
+    object-fit: cover;
+    margin: 0 auto;
 }
 
 .catdiv {
@@ -427,7 +433,42 @@ ul{
     display: flex;
     justify-content: center;
     margin-top: 2em;
+    gap: 20px;
     
+}
+
+.cmessages {
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.csaved {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    background-color: rgb(83, 255, 129);
+    padding: 0 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 0px;
+    transition: height 0.4s;
+}
+
+.cerr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    background-color: rgb(255, 83, 83);
+    padding: 0 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 0px;
+    transition: height 0.4s;
 }
 
 .buyBtn button {

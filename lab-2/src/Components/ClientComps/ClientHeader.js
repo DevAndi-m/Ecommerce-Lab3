@@ -27,9 +27,6 @@ function ClientHeader() {
           <li>
             <Link to='/account'><a>Account</a></Link>
           </li>
-          <li>
-            <Link to='/admin'><a>Admin</a></Link>
-          </li>
         </ul>
       </nav>
       <Link to='/myCart'>

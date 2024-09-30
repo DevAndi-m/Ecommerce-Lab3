@@ -7,13 +7,9 @@ function ProductShowcase({ product, productSeller, handleAddToCart, er, ner }) {
     <div className="small-container1 single-product1">
       <div className="row1">
         <div className="col1-2">
-          <img src={product11} alt={product.productName} width="100%" id="productImg1" />
+          <img src={product.productImage} alt={product.productName} width="100%" id="productImg1" />
 
           <div className="small-img-row1">
-            <div className="small-img-col1">
-              <img src={product5} alt="Small Product" width="100%" className="small-img1" />
-            </div>
-            {/* Add additional small images dynamically if needed */}
           </div>
         </div>
 

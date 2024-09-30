@@ -13,7 +13,7 @@ function SmallProductCard({ product }) {
 
   return (
     <div className="col1-4" onClick={handleClick}>
-        <a><img src={productimg} alt="Downshifter Sports Shoes" /></a>
+        <a><img src={product.productImage} alt={productimg} /></a>
         <a><h4>{product.productName}</h4></a>
         <p>${product.productPrice.toFixed(2)}</p> 
         <p>{product.productQuantity} left</p>
