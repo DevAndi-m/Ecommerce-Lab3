@@ -25,8 +25,8 @@ const HomePage = () => {
             <ClientHeader />
           <div className="row1">
             <div className="col1-2">
-              <h1>Give your Workout <br />A New Style!</h1>
-              <p>Success isn't always about greatness. It's about consistency.<br />Consistent hard work gains success. Greatness will come.</p>
+              <h1>We have everything <br />Anything!</h1>
+              <p>Discover the latest trends and timeless classics, all in one place.<br />Shop now and experience the difference.</p>
               <a href="/products" className="btn1">Explore Now &#8594;</a>
             </div>
             <div className="col1-2">

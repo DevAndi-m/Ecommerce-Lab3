@@ -13,48 +13,46 @@ const SuccessPage = ({ setCart }) => {
       const userId = decodedToken.id;
   
       try {
-        // Log to confirm the token and userId are being decoded correctly
         console.log("Token:", token);
         console.log("User ID:", userId);
   
-        // Fetch cart from PostgreSQL
         const { data: cartData } = await axios.get(`http://localhost:5000/api/cart/${userId}`);
         const cartItems = cartData.cart;
   
-        // Log to verify cart data is fetched correctly
         console.log("Cart Items:", cartItems);
   
-        // Call purchaseProducts API
         const purchaseResponse = await axios.post(
-        'http://localhost:5000/api/purchases/purchase',
-        { cart: cartItems, userId },
-        {
-            headers: { Authorization: `Bearer ${token}` }, // Include the token in the Authorization header
-        }
+          'http://localhost:5000/api/purchases/purchase',
+          { cart: cartItems, userId },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
         );
-          
+
+        console.log('Purchase:' ,purchaseResponse);
   
-        // Log response from the API to verify the purchase was processed
-        console.log("Purchase Response:", purchaseResponse.data);
-  
-        // Clear the cart in the front-end and log success message
         setCart([]);
-        alert('Purchase successful and cart cleared!');
-        navigate('/myCart');
       } catch (error) {
-        // Log errors to the console for debugging
         console.error('Error during purchase process:', error);
       }
     };
   
     handlePostPurchase();
+
+    // Redirect to /shop after 5 seconds
+    const redirectTimer = setTimeout(() => {
+      navigate('/shop');
+    }, 5000);
+
+    return () => clearTimeout(redirectTimer);
   }, [setCart, navigate]);
   
   
   return (
-    <div>
-      <h1>Payment Successful</h1>
-      <p>Your purchase was successful. Thank you for your order!</p>
+    <div className='scss'>
+      <h1>Payment Successful!</h1>
+      <h3>Your purchase was successful. Thank you for your order!</h3>
+      <p>You will be redirected shortly...</p>
     </div>
   );
 };

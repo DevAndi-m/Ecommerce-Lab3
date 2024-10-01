@@ -5,7 +5,7 @@ function SmallPurchasedProduct({ product, seller, datePurchased, quantityPurchas
   return (
     <div className='ppbox'>
       <div className='ppImg'>
-        <img src={productImg} alt={product.productName} />
+        <img src={product.productImage} alt={product.productName} />
       </div>
       <div className='ppInfoHolder'>
         <p>Name: {product.productName}</p>
