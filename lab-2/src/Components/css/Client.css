@@ -488,6 +488,8 @@ ul{
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
 }
 
+
+
 /*-----------------------media query for menu -----------------------*/
 
 @media only screen and (max-width:800px){
@@ -954,8 +956,23 @@ table{
     border-collapse: collapse;
 }
 
+.cart-info2 {
+    width: 5em;
+    height: 5em;
+    overflow: hidden; /* Hide overflow */
+    border-radius: 0.25em;
+    margin-right: 10px;
+}
+
+.cart-info2 img{
+    width: 100%; /* Fill the container width */
+    height: 100%; /* Fill the container height */
+    object-fit: cover;
+}
+
 .cart-info1{
     display:flex;
+    align-items: center;
     flex-wrap: wrap;
 }
 th{
@@ -980,6 +997,7 @@ td a{
 td img{
     width: 80px;
     height: 80px;
+
     margin-right: 10px;
 }
 .total-price1{

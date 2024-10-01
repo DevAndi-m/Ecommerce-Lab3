@@ -11,38 +11,46 @@ const SuccessPage = ({ setCart }) => {
       const token = localStorage.getItem('token');
       const decodedToken = jwtDecode(token);
       const userId = decodedToken.id;
-
+  
       try {
-        // Fetch cart from PostgreSQL instead of localStorage
+        // Log to confirm the token and userId are being decoded correctly
+        console.log("Token:", token);
+        console.log("User ID:", userId);
+  
+        // Fetch cart from PostgreSQL
         const { data: cartData } = await axios.get(`http://localhost:5000/api/cart/${userId}`);
-
-        const cartItems = cartData.cart;  // Assuming cart is returned in this format
-
-        // Clear the user's cart in PostgreSQL
-        for (const item of cartItems) {
-          const { product_id } = item; // Adjust this field based on your schema
-          await axios.delete(`http://localhost:5000/api/cart/${userId}/${product_id}`);
+        const cartItems = cartData.cart;
+  
+        // Log to verify cart data is fetched correctly
+        console.log("Cart Items:", cartItems);
+  
+        // Call purchaseProducts API
+        const purchaseResponse = await axios.post(
+        'http://localhost:5000/api/purchases/purchase',
+        { cart: cartItems, userId },
+        {
+            headers: { Authorization: `Bearer ${token}` }, // Include the token in the Authorization header
         }
-
-        // Call purchaseProducts API to save purchased products
-        await axios.post('http://localhost:5000/api/purchases/purchase', {
-          cart: cartItems, // Send the fetched cart data from PostgreSQL
-          userId,
-        });
-
-        // Clear the cart in the front-end
+        );
+          
+  
+        // Log response from the API to verify the purchase was processed
+        console.log("Purchase Response:", purchaseResponse.data);
+  
+        // Clear the cart in the front-end and log success message
         setCart([]);
-
         alert('Purchase successful and cart cleared!');
-        navigate('/myCart');  // Optionally redirect back to the cart or another page
+        navigate('/myCart');
       } catch (error) {
-        console.error('Error clearing cart or saving purchase:', error);
+        // Log errors to the console for debugging
+        console.error('Error during purchase process:', error);
       }
     };
-
+  
     handlePostPurchase();
   }, [setCart, navigate]);
-
+  
+  
   return (
     <div>
       <h1>Payment Successful</h1>

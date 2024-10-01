@@ -103,8 +103,10 @@ function CartPage() {
               {cart.map((item) => (
                 <tr key={item.product_id}>
                   <td>
-                    <div className="cart-info1">
-                      <img src={ecart} alt={item.productName} />
+                      <div className="cart-info1">
+                        <dic className="cart-info2">
+                          <img src={item.productImage} alt={item.productName} />
+                        </dic>
                       <div>
                         <p>{item.productName}</p>
                         <small>Price: ${item.productPrice}</small><br />

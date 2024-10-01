@@ -3,7 +3,7 @@ import AccountInfo from './AccountInfo';
 import AccountPost from './AccountPost';
 import AccountHistory from './AccountHistory';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode} from 'jwt-decode';
 import { useNavigate } from 'react-router-dom'; // For redirection
 
 function ClientAccountLogged({ setIsLoggedIn }) {
